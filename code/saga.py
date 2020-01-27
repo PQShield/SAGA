@@ -14,13 +14,10 @@ from scipy.stats import chisquare
 # Distributions
 from scipy.stats import chi2, norm
 # Numpy stuff
-from numpy import cov, set_printoptions, diag, ones, array, mean
-from numpy.linalg import matrix_rank, inv, eig, slogdet, eigh
+from numpy import cov, set_printoptions, diag, array, mean
+from numpy.linalg import matrix_rank, inv, eig, eigh
 import matplotlib.pyplot as plt
 
-# Data structure
-# Sphericity
-# from pingouin import sphericity
 # Math functions
 from math import ceil, sqrt, exp, log
 # Data management
@@ -29,47 +26,36 @@ import re
 import pandas
 # Uniformity
 from random import uniform
-# For debugging purposes
-import sys
-import time
-if sys.version_info >= (3, 4):
-    from importlib import reload  # Python 3.4+ only.
-# For HZ multivariate test, used in scipy.spatial.distance.mahalanobis
-# from scipy.spatial import distance
 
 # For HZ multivariate test, used in scipy.spatial.distance.mahalanobis
 from numpy import floor
 from numpy import tile
-##### TODO Remove: from scipy.special import erf
 
 # qqplot
-import statsmodels.api as sm
 import scipy.stats as stats
 from numpy import transpose, sort
-##### TODO Remove: from scipy.interpolate import UnivariateSpline
-##### TODO Remove: import matplotlib as mpl
-
 
 # doornik hansen
-##### TODO Remove: from numpy import negative, fill_diagonal, zeros
 from numpy import corrcoef, power
 from numpy import log as nplog
 from numpy import sqrt as npsqrt
 
 # mvn plot test
-##### TODO Remove: from numpy import linspace, meshgrid, dstack, 
 from numpy import histogram
-##### TODO Remove:  from mpl_toolkits import mplot3d
-##### TODO Remove:  from scipy.stats import multivariate_normal
 
-# for rejection testing
-##### TODO Remove:  from collections import Counter, defaultdict, OrderedDict
+# rejection testing
 from collections import Counter, defaultdict
-##### TODO Remove:  import itertools  
 from numpy import arange
 
 # import csv files
-import csv    
+import csv
+
+# For debugging purposes
+import sys
+import time
+if sys.version_info >= (3, 4):
+    from importlib import reload  # Python 3.4+ only.
+
 
 # Tailcut rate
 tau = 14
@@ -83,15 +69,17 @@ set_printoptions(precision=4)
 
 def gaussian(x, mu, sigma):
     """
-    Gaussian function
+    Gaussian function of center mu and "standard deviation" sigma.
     """
     return exp(- ((x - mu) ** 2) / (2 * (sigma ** 2)))
 
 
 def make_gaussian_pdt(mu, sigma):
     """
-    Make the probability distribution table (PDT) of a discrete Gaussian
+    Make the probability distribution table (PDT) of a discrete Gaussian.
+    The output is a dictionary.
     """
+    # The distribution is restricted to [-zmax, zmax).
     zmax = ceil(tau * sigma)
     pdt = dict()
     for z in range(int(floor(mu)) - zmax, int(ceil(mu)) + zmax):
@@ -104,7 +92,7 @@ def make_gaussian_pdt(mu, sigma):
 
 class UnivariateSamples:
     """
-    Class for computing statistics on univariate Gaussian samples
+    Class for computing statistics on univariate Gaussian samples.
     """
 
     def __init__(self, mu, sigma, list_samples):
@@ -122,28 +110,34 @@ class UnivariateSamples:
         - a chi-square test between the two distributions
         """
         zmax = ceil(tau * sigma)
+        # Expected center standard variation.
         self.exp_mu = mu
         self.exp_sigma = sigma
+        # Number of samples
         self.nsamples = len(list_samples)
         self.histogram = dict()
         self.outlier = 0
+        # Initialize histogram
         for z in range(int(floor(mu)) - zmax, int(ceil(mu)) + zmax):
             self.histogram[z] = 0
         for z in list_samples:
+            # Detect and count outliers (samples not in [-zmax, zmax))
             if z not in self.histogram:
-                # print("mu = {mu}".format(mu=mu))
-                # print("sigma = {s}".format(s=sigma))
-                # print("z = {z}".format(z=z))
                 self.outlier += 1
+            # Fill histogram according to the samples
             else:
                 self.histogram[z] += 1
+        # Empiric mean, variance, skewness, kurtosis and standard deviation
         self.mean = sum(list_samples) / self.nsamples
         self.variance = moment(list_samples, 2)
         self.skewness = skew(list_samples)
         self.kurtosis = kurtosis(list_samples)
         self.stdev = sqrt(self.variance)
+        # Chi-square statistic and p-value
         self.chi2_stat, self.chi2_pvalue = self.chisquare()
-        # Final assessment
+        # Final assessment: the dataset is valid if:
+        # - the chi-square p-value is higher than pmin
+        # - there is no outlier
         self.is_valid = True
         self.is_valid &= (self.chi2_pvalue > pmin)
         self.is_valid &= (self.outlier == 0)
@@ -175,11 +169,12 @@ class UnivariateSamples:
         """
         Run a chi-square test to compare the expected and empiric distributions
         """
-        # We construct two histograms: the expected one (exp_histogram)
-        # and the empirical one (histogram)
+        # We construct two histograms:
+        # - the expected one (exp_histogram)
+        # - the empirical one (histogram)
         histogram = deepcopy(self.histogram)
         # The chi-square test require buckets to have enough elements,
-        # so we aggregate samples from the left and right tails in two buckets
+        # so we aggregate samples in the left and right tails in two buckets
         exp_histogram = make_gaussian_pdt(self.exp_mu, self.exp_sigma)
         obs = list(histogram.values())
         exp = list(exp_histogram.values())
@@ -201,8 +196,6 @@ class UnivariateSamples:
         diff = self.nsamples - sum(exp_histogram.values())
         exp_histogram[int(round(self.exp_mu))] += diff
         res = chisquare(obs, f_exp=exp)
-        # if res[1] < pmin:
-        #     print(res)
         return res
 
 
@@ -217,7 +210,7 @@ class MultivariateSamples:
         - a list of Falcon signatures as produced by falcon.py
 
         Output:
-        - an object containing various estimates for the multivariate normality of the empiric distribution
+        - 
         """
         # Parse the signatures and store them
         # clean_list = [sig[1][0] + sig[1][1] for sig in list_signatures]
@@ -236,10 +229,8 @@ class MultivariateSamples:
         self.nb_gaussian_coord = sum((self.univariates[i].chi2_pvalue > pmin) for i in range(self.dim))
         # Estimate the (normalized) covariance matrix
         self.covariance = cov(self.data.transpose()) / (self.exp_si ** 2)
-        # self.box_index, self.cbox_index = estimate_sphericity(self.covariance)
         self.DH, self.AS, self.PO, self.PA = doornik_hansen(self.data)
         self.dc_pvalue = diagcov(self.covariance, self.nsamples)
-
 
     def __repr__(self):
         """
@@ -272,7 +263,6 @@ class MultivariateSamples:
         """
         Visual representation of the covariance matrix
         """
-        # covariance = array([[log(abs(elt)) for elt in row] for row in self.covariance])
         plt.imshow(self.covariance, interpolation='nearest')
         plt.show()
 
@@ -292,7 +282,7 @@ class MultivariateSamples:
         requires many samples, is very slow and uses lots of memory.
         """
         if (self.nsamples < 500):
-            print("It is advised to have at least 500 samples for Mardi's test")
+            print("At least 500 samples are recommended for Mardia's test")
         nsamp = self.nsamples
         dim = self.dim
         means = [list(self.data.mean())] * nsamp
@@ -328,8 +318,15 @@ class MultivariateSamples:
         B = B
         return (A, B, pval_A, pval_B)
 
-def doornik_hansen(data):
 
+def doornik_hansen(data):
+    """
+    Perform the Doornik-Hansen test
+    (https://doi.org/10.1111/j.1468-0084.2008.00537.x)
+
+    This computes and transforms multivariate variants of the skewness
+    and kurtosis, then computes a chi-square statistic on the results.
+    """
     data = pandas.DataFrame(data)
     data = deepcopy(data)
 
@@ -348,15 +345,15 @@ def doornik_hansen(data):
 
     if(matrix_rank(R) < p):
         V = pandas.DataFrame(V)
-        G = V.loc[:, (L != 0).any(axis=0)]   #G = V(:,any(L~=0));
+        G = V.loc[:, (L != 0).any(axis=0)]
         data = data.dot(G)
         ppre = p
         p = data.size / len(data)
         raise ValueError("NOTE:Due that some eigenvalue resulted zero, a new data matrix was created. Initial number of variables = ", ppre, ", were reduced to = ", p)
         R = corrcoef(data.transpose())
         L, V = eigh(R)
-        L = diag(L)  
-    
+        L = diag(L)
+
     means = [list(data.mean())] * n
     stddev = [list(data.std(ddof=0))] * n
 
@@ -388,12 +385,14 @@ def doornik_hansen(data):
     al = a + (skew ** 2) * c
     chi = (kurt - 1 - (skew ** 2)) * k * 2
     z2 = (((chi / (2 * al)) ** (1 / 3)) - 1 + 1 / (9 * al)) * npsqrt(9 * al)
-
     kurt -= 3
+
     # omnibus normality statistic
     DH = z1.dot(z1.transpose()) + z2.dot(z2.transpose())
     AS = n / 6 * skew.dot(skew.transpose()) + n / 24 * kurt.dot(kurt.transpose())
-    v = 2 * p  # degrees of freedom
+    # degrees of freedom
+    v = 2 * p
+    # p-values
     PO = 1 - chi2.cdf(DH, v)
     PA = 1 - chi2.cdf(AS, v)
 
@@ -449,13 +448,10 @@ def diagcov(cov_mat, nsamples):
     chistat = sum(elt ** 2 for elt in diagnorm)
     pvalue = 1 - chi2.cdf(chistat, df=4 * (n0 - 1))
     print("pvalue = {pvalue}".format(pvalue=pvalue))
-    # print("diagsum = {diagsum}".format(diagsum=diagsum))
-    # print("diagnorm = {diagnorm}".format(diagnorm=diagnorm))
-    # return diagsum, diagnorm
     return pvalue
 
 
-def test_pysampler(nb_mu=100, nb_sig=100, nb_samp=1000):
+def test_pysampler(nb_mu=100, nb_sig=100, nb_samp=100):
     """
     Test our Gaussian sampler on a bunch of samples.
     """
@@ -467,7 +463,6 @@ def test_pysampler(nb_mu=100, nb_sig=100, nb_samp=1000):
     q = 12289
     sig_min = 1.3
     sig_max = 1.8
-    # rejected = []
     nb_rej = 0
     for i in range(nb_mu):
         mu = uniform(0, q)
@@ -487,7 +482,8 @@ def test_falcon():
     - the sampler over Z
     - the signature scheme
     """
-    # We now test the Gaussian sampler over Z, using the samples in:
+
+    # We first test the Gaussian sampler over Z, using the samples in:
     # - testdata/sampler_fpnative
     # - testdata/sampler_avx2
     # - testdata/sampler_fpemu
@@ -515,12 +511,16 @@ def test_falcon():
                 list_z = re.split(", |,\n", line2)
                 list_z = [int(elt) for elt in list_z[:-1]]
                 u = UnivariateSamples(mu, sigma, list_z)
-                # print(u)
                 n_mu_and_sig += 1
                 n_invalid += (u.is_valid is False)
         print("- We tested {k} different (mu, sigma) list of samples".format(k=n_mu_and_sig))
         print("- We found {k} invalid list of samples\n".format(k=n_invalid))
 
+    # Now we test the distribution of signatures using the multivariate test
+    # Each element of this filelist is a text file containing a large number of signatures
+    # Inside each element, each line contains the concatenation of s_1 and s_2, where:
+    # - s_1 + s_2 * h = H(salt||msg)
+    # - salt is some random salt
     filelist = [
         "falcon64_avx2",
         "falcon128_avx2",
@@ -545,52 +545,64 @@ def test_falcon():
             exp_sig = 0
             list_sig = []
             while True:
+                # Parse each line
                 line = f.readline()
                 if not line:
                     break  # EOF
                 sig = re.split(", |,\n", line)
                 sig = [int(elt) for elt in sig[:-1]]
-                # print(sig)
                 list_sig += [sig]
                 exp_sig += sum(elt ** 2 for elt in sig)
                 n_sig += 1
+            # exp_sig is the expected sigma based on the samples
             exp_sig = sqrt(exp_sig / (n_sig * len(list_sig[0])))
             mv = MultivariateSamples(exp_sig, list_sig)
             print(mv)
     return
 
 
-def test_sig(n=128, nb_sig=100):
+def test_sig(n=128, nb_sig=1000, perturb=False, level=0):
+    """
+    Test signatures output by a Python implementation of Falcon.
+    This test allow to perturb the FFT by setting the rightmost node
+    of the FFT tree (of the private key) to 0. One can check that, at
+    least for moderate levels (0 to 4), the test will end up detecting
+    (via diagcov) that the signatures output do not follow the correct
+    distribution.
+
+    Input:
+    - n: the degree of the ring
+    - nb_sig: number of signatures
+    - perturb: if set to 1, one node in the FFT tree is set to 0
+    - level: determines which node (the rightmost one at a given level)
+      is set to 0
+    """
     start = time.time()
+    # Generate a private key
     sk = falcon.SecretKey(n)
     # Perturb the FFT tree
-    # for i in [1, 2]:
-    #    for j in [1, 2]:
-    #        for k in [1, 2]:
-    #             for l in [1, 2]:
-    #                 for m in [1, 2]:
-    #                     print(sk.T_fft[i][j][k][l][0])
-    #                 sk.T_fft[i][j][k][0] = [0] * (n // 4)
-    # sk.T_fft[0] = [0] * n
-    # sk.T_fft[2][0] = [0] * (n // 2)
-    # sk.T_fft[2][1][0] = [0] * (n // 4)
-    # sk.T_fft[1][1][0] = [0] * (n // 4)
-    # sk.T_fft[1][2][0] = [0] * (n // 4)
-    # sk.T_fft[2][1][0] = [0] * (n // 4)
-    # sk.T_fft[2][2][2][2][0] = [0] * (n // 16)            # For n >= 32
-    # sk.T_fft[2][2][2][2][2][0] = [0] * (n // 32)         # For n >= 64
-    # sk.T_fft[2][2][2][2][2][2][0] = [0] * (n // 64)      # For n >= 128
-    # sk.T_fft[2][2][2][2][2][2][2][0] = [0] * (n // 128)  # For n >= 256
+    if perturb is True:
+        # Check that the level is less than the FFT tree depth
+        assert(1 << level) < n
+        u, k = sk.T_fft, n
+        # Find the node
+        for _ in range(level):
+            u = u[2]
+            k >>= 1
+        # Zero-ize the node
+        u[0] = [0] * k
     end = time.time()
     print("Took {t:.2f} seconds to generate the private key.".format(t=end - start))
 
+    # Compute signatures
     message = "0"
     start = time.time()
     list_signatures = [sk.sign(message, reject=False) for _ in range(nb_sig)]
+    # Strip away the nonces and concatenate the s_1's and s_2's
     list_signatures = [sig[1][0] + sig[1][1] for sig in list_signatures]
     end = time.time()
     print("Took {t:.2f} seconds to generate the samples.".format(t=end - start))
-
+    # Perform the statistical test
     start = time.time()
     samples_data = MultivariateSamples(sk.sigma, list_signatures)
     end = time.time()
@@ -599,21 +611,21 @@ def test_sig(n=128, nb_sig=100):
 
 
 def test_rejind(mu, sigma):
-    '''input assumes dataset with num rejs (a) for each output (b)'''
-    '''to form the data structure [(a,b)]*n to test for independence'''
-    
-    #parameters to generate data
+    """
+    input assumes dataset with num rejs (a) for each output (b)
+    to form the data structure [(a,b)]*n to test for independence
+    """
+
+    # parameters to generate data
     n = 10000
     mu = 0
     nb_mu = 100
     sigma = 1.5
-    nb_sigma = 25
     q = 12289
-    sig_min = 1.3
-    sig_max = 1.8
 
-    #assumed data input for testing:
-    data = [samplerz_rep(mu, sigma) for _ in range(n)] #output given as a tuple (x,#reps)
+    # assumed data input for testing:
+    # output given as a tuple (x,#reps)
+    data = [samplerz_rep(mu, sigma) for _ in range(n)]
 
     counter = Counter(map(tuple,data))
     values, rejects = zip(*data)
@@ -621,29 +633,27 @@ def test_rejind(mu, sigma):
     mu = 0
     for i in range(nb_mu):
         list_samples = [samplerz_rep(mu, sigma) for _ in range(n)]
-        counter = dict(Counter(map(tuple,list_samples)))
+        counter = dict(Counter(map(tuple, list_samples)))
         result = defaultdict(int)
-        ##### TODO Remove: result2 = defaultdict(int)
         for key in sorted(counter.keys()):
             result[key[1]] += int(counter[key])
         result = dict(result)
         results.append(result)
     mu += q / nb_mu
-    
-    #sort data
+
+    # sort data
     df = pandas.DataFrame(results)
     df = df.fillna(0)
     df = df.sort_index(axis=1)
     print(df)
-    
-    #plot
-    plt.figure(figsize=(24,5))
+
+    # plot
+    plt.figure(figsize=(24, 5))
     plt.pcolor(df)
     plt.colorbar
-    plt.yticks(arange(0, len(df.index), step = 10 ), fontsize=17)
+    plt.yticks(arange(0, len(df.index), step=10), fontsize=17)
     plt.xticks(arange(0.5, len(df.columns), 1), df.columns, fontsize=17)
 
-    #plt.xticks([my_xticks[0], my_xticks[-1]], visible=True, rotation="horizontal")
     plt.rcParams["axes.grid"] = False
     plt.xlim((0, 9))
     plt.xlabel('Number of Rejections', fontsize=21)
@@ -651,39 +661,36 @@ def test_rejind(mu, sigma):
     plt.savefig('rejections.eps', format='eps', bbox_inches="tight", pad_inches=0)
     plt.show()
 
-def test_basesampler(mu, sigma):
-    ''' a set of visual tests, assuming you have failed some tests'''
-    '''Either for univariate data input or generated below'''
 
-    #generate data
+def test_basesampler(mu, sigma):
+    """
+    A set of visual tests, assuming you have failed some tests,
+    either for univariate data input or generated below.
+    """
+
+    # generate data
     n = 100000
     mu = 0
     sigma = 1.5
     data = [samplerz(mu, sigma) for _ in range(n)]
 
-    ##histogram
+    # histogram
     hist, bins = histogram(data, bins=abs(min(data)) + max(data))
     x = bins[:-1]
     y1 = hist
-    y2 = norm.pdf(x, mu, sigma)*n
+    y2 = norm.pdf(x, mu, sigma) * n
     plt.bar(x, y1, width=1.25, color='blue', edgecolor='none', label='Gauss Samples')
     plt.plot(x, y2, '-r', label='Gauss Expected')
     plt.xlabel('$x$')
     plt.ylabel('pdf$(x)$')
     plt.legend(loc='upper right')
-    plt.title("Gaussian Samples, Observed vs Expected",fontweight="bold", fontsize=12)
-    plt.savefig('histogram.eps', format='eps', bbox_inches="tight", pad_inches=0)    
-    plot1 = plt.plot()    
+    plt.title("Gaussian Samples, Observed vs Expected", fontweight="bold", fontsize=12)
+    plt.savefig('histogram.eps', format='eps', bbox_inches="tight", pad_inches=0)
 
-    ##qqplot
-    ##### TODO Remove: pp_x = sm.ProbPlot(hist, fit=True)
-    ##### TODO Remove: pp_y = sm.ProbPlot(y2, fit=True)
-    fig = sm.qqplot(array(data),line='s')
+    # qqplot
     r2 = stats.linregress(sort(hist), sort(y2))[2] ** 2
     plt.title('R-Squared = %0.20f' % r2, fontsize=9)
     plt.suptitle("QQ plot for Univariate Normality of Gaussian Samples", fontweight="bold", fontsize=12)
-    props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
-
     plt.savefig('qqplot_test.eps', format='eps', bbox_inches="tight", pad_inches=0)
     plt.show()
 
@@ -691,7 +698,6 @@ def test_basesampler(mu, sigma):
 #######################
 # Supplementary Stuff #
 #######################
-
 def estimate_sphericity(covar_matrix):
     """
     Given a sample covariance matrix (in pandas DataFrame format), compute
@@ -718,13 +724,9 @@ def estimate_sphericity(covar_matrix):
     cbox_index = cbox_num / cbox_den
     # Compute eigenvalues (the eigenvalues of the centered and
     # non-centered covariance matrices seem to be the same!)
-    eigensamp = eig(covariance)[0]
     eigen = eig(cov_centered)[0]
-    # print(eigensamp)
-    # print(eigen)
     # Compute V
     V = (sum(elt for elt in eigen) ** 2) / sum(elt ** 2 for elt in eigen)
-    Vsamp = (sum(elt for elt in eigensamp) ** 2) / sum(elt ** 2 for elt in eigensamp)
     statistic = ((dim - 1) ** 2) * (V - 1 / (dim - 1)) / (2 * dim)
     df = (dim * (dim - 1) / 2) - 1
     print("statistic      = {s}".format(s=statistic))
@@ -732,28 +734,10 @@ def estimate_sphericity(covar_matrix):
     return box_index, cbox_index
 
 
-def compound_symmetry(covar_matrix, ns, dim, sigma):
-    print("ns =", ns)
-    print("dim =", dim)
-    nu = (dim * (dim + 1) / 2) - 2
-    C = dim * ((dim + 1) ** 2) * (2 * dim - 3) / (6 * (ns - 1) * (dim - 1) * (dim ** 2 + dim - 4))
-    S1 = dim * log(sigma)
-    S0 = slogdet(covar_matrix)[1]
-    print("C = {c}".format(c=C))
-    print("log(S0) = {s}".format(s=S0))
-    print("S1 = {s}".format(s=S1))
-    print(S1 / S0)
-    M = (C - 1) * (dim - 1) * (S1 - S0)
-    print("M = {m}".format(m=M))
-    print("nu = {nu}".format(nu=nu))
-
-
-def qqplot(data): #https://www.itl.nist.gov/div898/handbook/eda/section3/qqplot.htm
-
-    # we might want to add list_samples as a def
-    # list_samples = [samplerz(mu, sigma) for _ in range(nb_samp)]
-    # going to define some variable here but they can be added to the function if needed
-    alpha = 0.05
+def qqplot(data):
+    """
+    https://www.itl.nist.gov/div898/handbook/eda/section3/qqplot.htm
+    """
     data = pandas.DataFrame(data)
     data = deepcopy(data)
 
@@ -765,8 +749,6 @@ def qqplot(data): #https://www.itl.nist.gov/div898/handbook/eda/section3/qqplot.
     difT = data - pandas.DataFrame(means)
     Dj = diag(difT.dot(inv(S)).dot(difT.transpose()))
     Y = data.dot(inv(S)).dot(data.transpose())
-    ##### TODO Remove: onerow = ones((1, n), dtype=int)
-    ##### TODO Remove: onecol = ones((n, 1), dtype=int)
     Ytdiag = array(pandas.DataFrame(diag(Y.transpose())))
     Djk = - 2 * Y.transpose()
     Djk += tile(Ytdiag, (1, n)).transpose()
@@ -775,20 +757,20 @@ def qqplot(data): #https://www.itl.nist.gov/div898/handbook/eda/section3/qqplot.
     for i in range(n):
         Djk_quick += list(Djk.values[i])
 
-    chi2_random = chi2.rvs(p-1, size=len(Dj))
+    chi2_random = chi2.rvs(p - 1, size=len(Dj))
     chi2_random = sort(chi2_random)
-    pp_r = sm.ProbPlot(sort(chi2_random))
-    pp_dj = sm.ProbPlot(sort(Dj))
     r2 = stats.linregress(sort(Dj), sort(chi2_random))[2] ** 2
-    fig1 = sm.qqplot(Dj, dist="chi2", distargs=(p-1,), line='45')
     plt.title('R-Squared = %0.20f' % r2, fontsize=9)
-    plt.suptitle("QQ plot for Multivariate Normality of Gaussian Samples", fontweight="bold", fontsize=12)
+    plt.suptitle("QQ plot for Multivariate Normality", fontweight="bold", fontsize=12)
 
     plt.savefig('qqplot.eps', format='eps', bbox_inches="tight", pad_inches=0)
     plt.show()
 
-# basic script for importing and testing csv files
+
 def csv_testing():
+    """
+    Basic script for importing and testing csv files
+    """
     with open('gaussian_samples.csv', "r") as csvfile:
         data = []
         for row in csv.reader(csvfile, delimiter=','):
