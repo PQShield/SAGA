@@ -204,20 +204,22 @@ class MultivariateSamples:
     Class for computing statistics on multivariate Gaussian samples
     """
 
-    def __init__(self, sigma, list_signatures):
+    def __init__(self, sigma, list_samples):
         """
         Input:
-        - a list of Falcon signatures as produced by falcon.py
+        - sigma: an expected standard deviation
+        - list_samples: a list of (expected) multivariate samples
 
         Output:
-        - 
+        - univariates[]: a list of UnivariateSamples objects (one / coordinate)
+        - covariance: an empiric covariance matrix
+        - DH, AS, PO, PA: statistics and p-values for the Doornik-Hansen test
+        - dc_pvalue: a p-value for our custom covariance-based test
         """
         # Parse the signatures and store them
-        # clean_list = [sig[1][0] + sig[1][1] for sig in list_signatures]
-        clean_list = list_signatures
-        self.nsamples = len(clean_list)
-        self.dim = len(clean_list[0])
-        self.data = pandas.DataFrame(clean_list)
+        self.nsamples = len(list_samples)
+        self.dim = len(list_samples[0])
+        self.data = pandas.DataFrame(list_samples)
         # Expected center and standard deviation
         self.exp_mu = 0
         self.exp_si = sigma
