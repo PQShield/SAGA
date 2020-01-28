@@ -18,7 +18,7 @@ This standalone implementation should be able to run on most machines. We have p
 
 Along with the main file to run these statistical tests, `saga.py`, we also provide code for our proposed sampler [1] in the files `sampler.c`, `sampler.py`, where `sampler_rep.py` is a file we use to get data on the repetition rate. We also provide [falcon/](code/falcon) and [testdata/](code/testdata) for python implementations of [Falcon](https://falcon-sign.info/) and its output values.
 
-#### Example for UnivariateSamples
+#### Example for univariate samples
 
 Suppose we want to test the normality of a (Python) list of *univariate* samples stored in `data`, with *expected* center `mu` and *expected* standard deviation `sigma`. This can be done by this snippet of code in Python:
 
