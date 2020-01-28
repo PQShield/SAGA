@@ -56,7 +56,7 @@ This creates an object `res`, and printing `res` gives expected and empiric mome
 Now suppose we want to test the normality of a (Python) list of *multivariate* samples stored in `list_sig`, with *expected* center 0 and *expected* standard deviation `exp_sig`. For replicability, we generated `list_sig` by parsing raw data contained in the 39.2 MB file [falcon64_avx2](code/testdata/falcon64_avx2), see the function `test_falcon()`. We then run the following snippet of code in Python:
 
 ```python
->> res = MultivariateSamples(exp_sig, list_sig)
+>> res = saga.MultivariateSamples(exp_sig, list_sig)
 >> res                                # print the results
 
 Testing a centered multivariate Gaussian of dimension = 128 and sigma = 171.831
