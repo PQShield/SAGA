@@ -1,6 +1,6 @@
 # Statistically Acceptable GAussians (SAGA)
 
-![Joke-Logo](code/testdata/saga.png)
+![Joke-Logo](images/saga.png)
 
 Authored by James Howe, Thomas Prest, Thomas Ricosset, and Mélissa Rossi - 27-Jan-2020
 
@@ -53,10 +53,10 @@ This creates an object `res`, and printing `res` gives expected and empiric mome
 
 #### Example for multivariate samples
 
-Now suppose we want to test the normality of a (Python) list of *multivariate* samples stored in `list_sig`, with *expected* center 0 and *expected* standard deviation `exp_sig`. For simplicity and because it applies to most multivariate samplers, the expected center is always considered as zero. One can still translate the samples if the expected center is nonzero. For replicability, we generated `list_sig` by parsing raw data contained in the 39.2 MB file [falcon64_avx2](code/testdata/falcon64_avx2), see the function `saga.test_falcon()`. We then run the following snippet of code in Python:
+Now suppose we want to test the normality of a (Python) list of *multivariate* samples stored in `data`, with *expected* center 0 and *expected* standard deviation `sigma`. For simplicity and because it applies to most multivariate samplers, the expected center is always considered as zero. One can still translate the samples if the expected center is nonzero. For replicability, we generated `data` by parsing raw data contained in the 39.2 MB file [falcon64_avx2](code/testdata/falcon64_avx2), see the function `saga.parse_multivariate_file()`. We then run the following snippet of code in Python:
 
 ```python
->> res = saga.MultivariateSamples(exp_sig, list_sig)
+>> res = saga.MultivariateSamples(sigma, data)
 >> res                                # print the results
 
 Testing a centered multivariate Gaussian of dimension = 128 and sigma = 171.831
@@ -88,7 +88,7 @@ The test checks that the data corresponds to a multivariate Gaussian, by doing t
 
 The p-values given by items 2 and 3 are > 0.001, and item 4 states that each coordinate looks Gaussian (in average, we expect 128 * 0.001 coordinates to be rejected), hence this list of samples pass our test of multivariate normality. In addition, one can plot the covariance matrix by typing `res.show_covariance()`, which gives:
 
-![covariance](code/testdata/covariance.png)
+![covariance](images/covariance.png)
 
 ***
 

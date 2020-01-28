@@ -449,7 +449,6 @@ def diagcov(cov_mat, nsamples):
     # Each diagnorm[i + _ * n0] should be a random normal variable
     chistat = sum(elt ** 2 for elt in diagnorm)
     pvalue = 1 - chi2.cdf(chistat, df=4 * (n0 - 1))
-    print("pvalue = {pvalue}".format(pvalue=pvalue))
     return pvalue
 
 
@@ -477,52 +476,104 @@ def test_pysampler(nb_mu=100, nb_sig=100, nb_samp=100):
     print("The test failed {k} times out of {t} (expected {e})".format(k=nb_rej, t=nb_mu * nb_sig, e=round(pmin * nb_mu * nb_sig)))
 
 
+def parse_univariate_file(filename):
+    """
+    Parse a file containing several univariate samples.
+
+    Input:
+    - the file name of a file containing 2 * k lines of this form:
+      - line 2 * i: "mu = xxx, sigma = yyy"
+      - line 2 * i + 1: zzz samples
+
+    Output:
+    - a Python list containing k elements:
+      - each element is of the form (mu, sigma, data):
+        - mu = expected center of a Gaussian
+        - sigma = expected standard deviation of a Gaussian
+        - data = samples from a distribution to test against the Gaussian
+                 parametrized by (mu, sigma)
+    """
+    # Initialize the output as the empty list
+    data_list = []
+    # Open the file
+    with open(filename) as f:
+        while True:
+            line1 = f.readline()
+            line2 = f.readline()
+            if not line2:
+                break  # EOF
+            # Parsing mu and sigma
+            (_, mu, sigma, _) = re.split("mu = |, sigma = |\n", line1)
+            mu = float(mu)
+            sigma = float(sigma)
+            # Parsing the samples z
+            data = re.split(", |,\n", line2)
+            data = [int(elt) for elt in data[:-1]]
+            # Add the triple (mu, sigma, data) to the output
+            data_list += [(mu, sigma, data)]
+    return data_list
+
+
+def parse_multivariate_file(filename):
+    """
+    Parse a file containing several multivariate samples.
+
+    Input:
+    - the file name of a file containing k lines
+      - each line corresponds to a multivariate sample
+      - the samples are all assumed to be from the same distribution
+
+    Output:
+    - sigma: the expected standard deviation of the samples
+    - data: a Python list of length k, containing all the samples
+    """
+    with open(filename) as f:
+        sigma = 0
+        data = []
+        while True:
+            # Parse each line
+            line = f.readline()
+            if not line:
+                break  # EOF
+            sample = re.split(", |,\n", line)
+            sample = [int(elt) for elt in sample[:-1]]
+            data += [sample]
+            sigma += sum(elt ** 2 for elt in sample)
+        # sigma is the expected sigma based on the samples
+        sigma = sqrt(sigma / (len(data) * len(data[0])))
+    return (sigma, data)
+
+
 def test_falcon():
     """
     We test samples obtained directly from Falcon's reference implementation.
     We test:
-    - the sampler over Z
-    - the signature scheme
+    - univariate samples from the sampler over Z
+    - multivariate samples from the signature scheme
     """
 
     # We first test the Gaussian sampler over Z, using the samples in:
     # - testdata/sampler_fpnative
     # - testdata/sampler_avx2
     # - testdata/sampler_fpemu
-    #
-    # Each of these files is a succession of lines of this form:
-    # - line 2 * i: "mu = xxx, sigma = yyy"
-    # - line 2 * i + 1: zzz samples
-    # We parse them accordingly
+    # Each file should be formatted as to be parsable with parse_univariate_file()
     for filename in ["sampler_fpnative", "sampler_avx2", "sampler_fpemu"]:
         print("Testing data in file testdata/{file}:".format(file=filename))
-        with open("testdata/" + filename) as f:
-            # n_mu_and_sig is the number of different couples (mu, sigma)
-            n_mu_and_sig = 0
-            n_invalid = 0
-            while True:
-                line1 = f.readline()
-                line2 = f.readline()
-                if not line2:
-                    break  # EOF
-                # Parsing mu and sigma
-                (_, mu, sigma, _) = re.split("mu = |, sigma = |\n", line1)
-                mu = float(mu)
-                sigma = float(sigma)
-                # Parsing the samples z
-                list_z = re.split(", |,\n", line2)
-                list_z = [int(elt) for elt in list_z[:-1]]
-                u = UnivariateSamples(mu, sigma, list_z)
-                n_mu_and_sig += 1
-                n_invalid += (u.is_valid is False)
+        data_list = parse_univariate_file("testdata/" + filename)
+        # n_mu_and_sig is the number of different couples (mu, sigma)
+        n_mu_and_sig = len(data_list)
+        n_invalid = 0
+        for elt in data_list:
+            (mu, sigma, data) = elt
+            u = UnivariateSamples(mu, sigma, data)
+            n_invalid += (u.is_valid is False)
         print("- We tested {k} different (mu, sigma) list of samples".format(k=n_mu_and_sig))
         print("- We found {k} invalid list of samples\n".format(k=n_invalid))
 
-    # Now we test the distribution of signatures using the multivariate test
-    # Each element of this filelist is a text file containing a large number of signatures
-    # Inside each element, each line contains the concatenation of s_1 and s_2, where:
-    # - s_1 + s_2 * h = H(salt||msg)
-    # - salt is some random salt
+    # Now we test the distribution of signatures using the multivariate test.
+    # Each element of this filelist is a text file containing a large number
+    # of multivariate samples. Each file should be formatted as to be
+    # parsable with parse_multivariate_file()
     filelist = [
         "falcon64_avx2",
         "falcon128_avx2",
@@ -539,27 +590,12 @@ def test_falcon():
         "falcon256_fpemu_big",
         "falcon512_fpemu_big",
         "falcon1024_fpemu_big",
-        ]
+    ]
     for filename in filelist:
         print("\n\nTesting data in file testdata/{file}:".format(file=filename))
-        with open("testdata/" + filename) as f:
-            n_sig = 0
-            exp_sig = 0
-            list_sig = []
-            while True:
-                # Parse each line
-                line = f.readline()
-                if not line:
-                    break  # EOF
-                sig = re.split(", |,\n", line)
-                sig = [int(elt) for elt in sig[:-1]]
-                list_sig += [sig]
-                exp_sig += sum(elt ** 2 for elt in sig)
-                n_sig += 1
-            # exp_sig is the expected sigma based on the samples
-            exp_sig = sqrt(exp_sig / (n_sig * len(list_sig[0])))
-            mv = MultivariateSamples(exp_sig, list_sig)
-            print(mv)
+        (sigma, data) = parse_multivariate_file("testdata/" + filename)
+        mv = MultivariateSamples(sigma, data)
+        print(mv)
     return
 
 
