@@ -1,9 +1,9 @@
 ### Importing dependencies
 
+import json
+
 # Gaussian sampler
 from sampler import samplerz
-# Gaussian sampler with repetitions
-from sampler_rep import samplerz_rep
 # Imports Falcon signature scheme
 from falcon import falcon
 
@@ -43,18 +43,11 @@ from numpy import sqrt as npsqrt
 # mvn plot test
 from numpy import histogram
 
-# rejection testing
-from collections import Counter, defaultdict
-from numpy import arange
 
 # import csv files
 import csv
 
-# For debugging purposes
-import sys
 import time
-if sys.version_info >= (3, 4):
-    from importlib import reload  # Python 3.4+ only.
 
 
 # Tailcut rate
@@ -95,20 +88,19 @@ class UnivariateSamples:
     Class for computing statistics on univariate Gaussian samples.
     """
 
-    def __init__(self, mu, sigma, list_samples):
+    def __init__(self, mu, sigma, list_samples, tau=14, chi2_bucket=10, pmin=0.001):
         """
         Input:
         - the expected center mu of a discrete Gaussian over Z
         - the expected standard deviation sigma of a discrete Gaussian over Z
         - a list of samples defining an empiric distribution
-
-        Output:
-        - the means of the expected and empiric distributions
-        - the standard deviations of the expected and empiric distributions
-        - the skewness of the expected and empiric distributions
-        - the kurtosis of the expected and empiric distributions
-        - a chi-square test between the two distributions
+        - tau: tail cutoff in units of sigma (default 14)
+        - chi2_bucket: minimum expected count per bucket (default 10)
+        - pmin: significance threshold for chi-square (default 0.001)
         """
+        self.tau = tau
+        self.chi2_bucket = chi2_bucket
+        self.pmin = pmin
         zmax = ceil(tau * sigma)
         # Expected center standard variation.
         self.exp_mu = mu
@@ -139,8 +131,23 @@ class UnivariateSamples:
         # - the chi-square p-value is higher than pmin
         # - there is no outlier
         self.is_valid = True
-        self.is_valid &= (self.chi2_pvalue > pmin)
+        self.is_valid &= (self.chi2_pvalue > self.pmin)
         self.is_valid &= (self.outlier == 0)
+        self._extended = None
+
+
+    def run_extended_battery(self, samples=None, mc_B=1000):
+        """Run the extended test battery (Phase 3 tests)."""
+        from univariate_tests import run_extended_battery
+        if samples is None:
+            samples = [z for z in self.histogram
+                       for _ in range(self.histogram[z])]
+        self._extended = run_extended_battery(
+            self.exp_mu, self.exp_sigma, samples,
+            tau=self.tau, alpha=self.pmin, mc_B=mc_B,
+        )
+        self.is_valid_extended = self.is_valid and self._extended["all_pass"]
+        return self._extended
 
 
     def __repr__(self):
@@ -158,12 +165,79 @@ class UnivariateSamples:
         rep += "Kurtosis |   {exp:.5f}      {emp:.5f}\n".format(exp=0, emp=self.kurtosis)
         rep += "\n"
         rep += "Chi-2 statistic:   {stat}\n".format(stat=self.chi2_stat)
-        rep += "Chi-2 p-value:     {pval}   (should be > {p})\n".format(pval=self.chi2_pvalue, p=pmin)
+        rep += "Chi-2 p-value:     {pval}   (should be > {p})\n".format(pval=self.chi2_pvalue, p=self.pmin)
         rep += "\n"
         rep += "How many outliers? {o}".format(o=self.outlier)
         rep += "\n\n"
         rep += "Is the sample valid? {i}".format(i=self.is_valid)
         return rep
+
+    def effect_sizes(self):
+        """
+        Compute TV distance and R_2 divergence as effect-size diagnostics.
+
+        These are NOT security certification — they resolve deviations
+        of order ~1/sqrt(N) only. See certification.py for proof-level
+        Renyi divergence bounds.
+        """
+        pdt = make_gaussian_pdt(self.exp_mu, self.exp_sigma)
+        n_eff = self.nsamples - self.outlier
+        if n_eff == 0:
+            return {"tv_distance": None, "r2_divergence": None}
+
+        tv = 0.0
+        chi2_unbucketed = 0.0
+        tv_null = 0.0
+        for z in pdt:
+            p_ideal = pdt[z]
+            p_emp = self.histogram.get(z, 0) / n_eff
+            tv += abs(p_emp - p_ideal)
+            if p_ideal > 0:
+                chi2_unbucketed += (p_emp - p_ideal) ** 2 / p_ideal
+            tv_null += sqrt(2 * p_ideal / (3.14159265 * n_eff))
+
+        tv *= 0.5
+        tv_null *= 0.5
+        r2 = log(1 + chi2_unbucketed)
+
+        return {
+            "tv_distance": tv,
+            "tv_null_expected": tv_null,
+            "r2_divergence": r2,
+            "resolution_floor": 1.0 / sqrt(n_eff),
+        }
+
+    def to_dict(self):
+        es = self.effect_sizes()
+        return {
+            "test": "univariate",
+            "params": {
+                "mu": self.exp_mu, "sigma": self.exp_sigma,
+                "n": self.nsamples,
+                "tau": self.tau, "chi2_bucket": self.chi2_bucket,
+                "pmin": self.pmin,
+            },
+            "chi2_stat": float(self.chi2_stat),
+            "chi2_pvalue": float(self.chi2_pvalue),
+            "outliers": self.outlier,
+            "is_valid": bool(self.is_valid),
+            "moments": {
+                "mean": {"expected": self.exp_mu,
+                         "empirical": float(self.mean)},
+                "stdev": {"expected": self.exp_sigma,
+                          "empirical": float(self.stdev)},
+                "skewness": {"expected": 0,
+                             "empirical": float(self.skewness)},
+                "kurtosis": {"expected": 0,
+                             "empirical": float(self.kurtosis)},
+            },
+            "effect_sizes": es,
+            "extended_tests": self._extended,
+            "is_valid_extended": getattr(self, 'is_valid_extended', None),
+        }
+
+    def to_json(self):
+        return json.dumps(self.to_dict(), indent=2)
 
     def chisquare(self):
         """
@@ -182,7 +256,7 @@ class UnivariateSamples:
         while(1):
             if (z >= len(exp) - 1):
                 break
-            while (z < len(exp) - 1) and (exp[z] < chi2_bucket / self.nsamples):
+            while (z < len(exp) - 1) and (exp[z] < self.chi2_bucket / self.nsamples):
                 obs[z + 1] += obs[z]
                 exp[z + 1] += exp[z]
                 obs.pop(z)
@@ -192,9 +266,10 @@ class UnivariateSamples:
         exp[-2] += exp[-1]
         obs.pop(-1)
         exp.pop(-1)
-        exp = [round(prob * self.nsamples) for prob in exp]
-        diff = self.nsamples - sum(exp_histogram.values())
-        exp_histogram[int(round(self.exp_mu))] += diff
+        n_effective = self.nsamples - self.outlier
+        exp = [round(prob * n_effective) for prob in exp]
+        diff = sum(obs) - sum(exp)
+        exp[len(exp) // 2] += diff
         res = chisquare(obs, f_exp=exp)
         return res
 
@@ -233,6 +308,21 @@ class MultivariateSamples:
         self.covariance = cov(self.data.transpose()) / (self.exp_si ** 2)
         self.DH, self.AS, self.PO, self.PA = doornik_hansen(self.data)
         self.dc_pvalue = diagcov(self.covariance, self.nsamples)
+        self._mv_extended = None
+
+    def run_multivariate_battery(self):
+        """Run the extended multivariate test battery (Phase 5)."""
+        from multivariate_tests import run_multivariate_battery
+        per_coord_pvals = [self.univariates[i].chi2_pvalue
+                           for i in range(self.dim)]
+        self._mv_extended = run_multivariate_battery(
+            self.exp_si,
+            self.data.values,
+            self.covariance,
+            self.nsamples,
+            per_coord_pvals,
+        )
+        return self._mv_extended
 
     def __repr__(self):
         """
@@ -260,6 +350,20 @@ class MultivariateSamples:
         rep += "\n"
         rep += "4 - Gaussian coordinates (w/ st. dev. = sigma)?    {k} out of {dim}\n".format(k=self.nb_gaussian_coord, dim=self.dim)
         return rep
+
+    def to_dict(self):
+        return {
+            "test": "multivariate",
+            "params": {"sigma": self.exp_si, "dim": self.dim, "n": self.nsamples},
+            "doornik_hansen": {"stat": float(self.DH), "pvalue": float(self.PO)},
+            "anderson_scedasticity": {"stat": float(self.AS), "pvalue": float(self.PA)},
+            "diagcov_pvalue": float(self.dc_pvalue),
+            "gaussian_coords": {"passing": int(self.nb_gaussian_coord), "total": self.dim},
+            "extended_tests": self._mv_extended,
+        }
+
+    def to_json(self):
+        return json.dumps(self.to_dict(), indent=2)
 
     def show_covariance(self):
         """
@@ -315,7 +419,7 @@ class MultivariateSamples:
         # B should follow a normal distribution
         chi_df = dim * (dim + 1) * (dim + 2) / 6
         pval_A = 1 - chi2.cdf(A, chi_df)
-        pval_B = 1 - norm.cdf(B)
+        pval_B = 2 * (1 - norm.cdf(abs(B)))
         A = A
         B = B
         return (A, B, pval_A, pval_B)
@@ -346,14 +450,29 @@ def doornik_hansen(data):
     L = diag(L)
 
     if(matrix_rank(R) < p):
-        V = pandas.DataFrame(V)
-        G = V.loc[:, (L != 0).any(axis=0)]
-        data = data.dot(G)
+        # Singular correlation matrix: project onto the eigenvectors with
+        # nonzero eigenvalues. The singular directions carry no
+        # information. (Selecting data COLUMNS by eigenvalue index -- as a
+        # previous version did -- is wrong: eigh's eigenvalue ordering is
+        # unrelated to the original column order, so it drops arbitrary
+        # coordinates. Reachable via mv_bad_fft_zeroed, which makes the
+        # covariance exactly singular.)
+        nonzero = [i for i in range(p) if L[i, i] > 0]
+        if len(nonzero) == 0:
+            return 0, 0, 0, 0
         ppre = p
-        p = data.size / len(data)
-        raise ValueError("NOTE:Due that some eigenvalue resulted zero, a new data matrix was created. Initial number of variables = ", ppre, ", were reduced to = ", p)
+        projected = array(data).dot(V[:, nonzero])
+        data = pandas.DataFrame(projected)
+        p = len(nonzero)
+        print("NOTE: covariance was singular; projected onto {} nonzero "
+              "eigenvectors (from {}).".format(p, ppre))
         R = corrcoef(data.transpose())
         L, V = eigh(R)
+        for i in range(p):
+            if(L[i] <= 1e-12):
+                L[i] = 0
+            if(L[i] > 1e-12):
+                L[i] = 1 / sqrt(L[i])
         L = diag(L)
 
     means = [list(data.mean())] * n
@@ -462,7 +581,7 @@ def test_pysampler(nb_mu=100, nb_sig=100, nb_samp=100):
     print("- {a} samples per center and sigma\n".format(a=nb_samp))
     assert(nb_samp >= 10 * chi2_bucket)
     q = 12289
-    sig_min = 1.3
+    sig_min = 1.2778
     sig_max = 1.8
     nb_rej = 0
     for i in range(nb_mu):
@@ -550,6 +669,12 @@ def test_falcon():
     We test:
     - univariate samples from the sampler over Z
     - multivariate samples from the signature scheme
+
+    NOTE: the ~530MB of reference sample files this reads from testdata/
+    were removed from the working tree in SAGA v2 (the suite now uses
+    generated, seeded vectors instead). To run this legacy check, restore
+    them from the paper baseline:
+        git checkout pqcrypto2020-as-published -- code/testdata
     """
 
     # We first test the Gaussian sampler over Z, using the samples in:
@@ -648,69 +773,18 @@ def test_sig(n=128, nb_sig=1000, perturb=False, level=0):
     return sk, samples_data
 
 
-def test_rejind(mu, sigma):
-    """
-    input assumes dataset with num rejs (a) for each output (b)
-    to form the data structure [(a,b)]*n to test for independence
-    """
-
-    # parameters to generate data
-    n = 10000
-    mu = 0
-    nb_mu = 100
-    sigma = 1.5
-    q = 12289
-
-    # assumed data input for testing:
-    # output given as a tuple (x,#reps)
-    data = [samplerz_rep(mu, sigma) for _ in range(n)]
-
-    counter = Counter(map(tuple,data))
-    values, rejects = zip(*data)
-    results = []
-    mu = 0
-    for i in range(nb_mu):
-        list_samples = [samplerz_rep(mu, sigma) for _ in range(n)]
-        counter = dict(Counter(map(tuple, list_samples)))
-        result = defaultdict(int)
-        for key in sorted(counter.keys()):
-            result[key[1]] += int(counter[key])
-        result = dict(result)
-        results.append(result)
-    mu += q / nb_mu
-
-    # sort data
-    df = pandas.DataFrame(results)
-    df = df.fillna(0)
-    df = df.sort_index(axis=1)
-    print(df)
-
-    # plot
-    plt.figure(figsize=(24, 5))
-    plt.pcolor(df)
-    plt.colorbar
-    plt.yticks(arange(0, len(df.index), step=10), fontsize=17)
-    plt.xticks(arange(0.5, len(df.columns), 1), df.columns, fontsize=17)
-
-    plt.rcParams["axes.grid"] = False
-    plt.xlim((0, 9))
-    plt.xlabel('Number of Rejections', fontsize=21)
-    plt.ylabel('Dataset Number', fontsize=21)
-    plt.savefig('rejections.eps', format='eps', bbox_inches="tight", pad_inches=0)
-    plt.show()
 
 
-def test_basesampler(mu, sigma):
+def test_basesampler(mu=0, sigma=1.5, data=None):
     """
     A set of visual tests, assuming you have failed some tests,
     either for univariate data input or generated below.
     """
-
-    # generate data
     n = 100000
-    mu = 0
-    sigma = 1.5
-    data = [samplerz(mu, sigma) for _ in range(n)]
+    if data is None:
+        data = [samplerz(mu, sigma) for _ in range(n)]
+    else:
+        n = len(data)
 
     # histogram
     hist, bins = histogram(data, bins=abs(min(data)) + max(data))

@@ -1,0 +1,35 @@
+name: SAGA Tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: pip install ".[dev]"
+
+      - name: Generate test vectors
+        run: python code/generate_test_vectors.py --outdir code/test_vectors --n 10000
+
+      - name: Verify compiled C sampler distribution
+        # Compiles sampler.c, runs it, and chi2-tests the output against
+        # the folded PDT. Catches comparison-logic bugs (e.g. an ascending
+        # CDT sampled with the RCDT convention) that the table lint misses.
+        run: pytest code/tests/test_sampler_c.py -v --tb=short
+
+      - name: Run tests
+        run: pytest code/tests/ -v --tb=short

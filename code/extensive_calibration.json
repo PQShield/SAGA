@@ -1,0 +1,4717 @@
+{
+  "params": {
+    "n": 10000,
+    "reps": 100,
+    "alpha": 0.001
+  },
+  "n_flaws": 65,
+  "n_tests": 8,
+  "n_param_points": 7,
+  "total_time_seconds": 8340.346817016602,
+  "results": {
+    "base_sampler": {
+      "mu": 0.0,
+      "sigma": 1.55,
+      "power_matrix": {
+        "sigma+0.1%": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 0.03,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+0.2%": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+0.5%": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.02,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+1.0%": {
+          "chi2": 0.01,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 0.02,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.04,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+2.0%": {
+          "chi2": 0.1,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 0.18,
+          "discrete_ad": 0.07,
+          "higher_crit": 0.26,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+3.0%": {
+          "chi2": 0.45,
+          "tail_exceedance": 0.06,
+          "sign_halfgauss": 0.62,
+          "discrete_ad": 0.29,
+          "higher_crit": 0.61,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+5.0%": {
+          "chi2": 0.98,
+          "tail_exceedance": 0.48,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 0.99,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+7.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.79,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+10.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.99,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+15.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+20.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.01": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.01,
+          "discrete_ad": 0.02,
+          "higher_crit": 0.03,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.02": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.02,
+          "discrete_ad": 0.03,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.05": {
+          "chi2": 0.13,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.2,
+          "discrete_ad": 0.61,
+          "higher_crit": 0.5,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.1": {
+          "chi2": 0.94,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.9,
+          "discrete_ad": 1.0,
+          "higher_crit": 0.99,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.15": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.01,
+          "block_homog": 0.0
+        },
+        "mu+0.2": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.3": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.02,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.5": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.32,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.7": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.98,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+1.0": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_50/49": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.02,
+          "discrete_ad": 0.02,
+          "higher_crit": 0.01,
+          "ljung_box": 0.0,
+          "runs_test": 0.01,
+          "block_homog": 0.0
+        },
+        "sign_51/49": {
+          "chi2": 0.01,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.02,
+          "discrete_ad": 0.12,
+          "higher_crit": 0.09,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_52/48": {
+          "chi2": 0.14,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.28,
+          "discrete_ad": 0.63,
+          "higher_crit": 0.53,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_53/47": {
+          "chi2": 0.7,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.9,
+          "discrete_ad": 0.99,
+          "higher_crit": 0.99,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_55/44": {
+          "chi2": 0.99,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_56/43": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_60/40": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_65/35": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_2.5sig": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_3.0sig": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.09,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_3.5sig": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.01,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_4.0sig": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.01,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.02,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_4.5sig": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.01,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.01,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_5.0sig": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_5.5sig": {
+          "chi2": 0.01,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.01,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_6.0sig": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_1.1x": {
+          "chi2": 0.11,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.22,
+          "discrete_ad": 0.12,
+          "higher_crit": 0.31,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_1.2x": {
+          "chi2": 0.93,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.96,
+          "discrete_ad": 0.71,
+          "higher_crit": 0.96,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_1.5x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_2.0x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_2.5x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_3.0x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_4.0x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.02,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_5.0x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "contam_0.1%": {
+          "chi2": 0.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 0.04,
+          "discrete_ad": 0.28,
+          "higher_crit": 0.01,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "contam_0.5%": {
+          "chi2": 0.96,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 0.99,
+          "discrete_ad": 0.99,
+          "higher_crit": 0.24,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "contam_1.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 0.96,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "contam_2.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "contam_5.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.01
+        },
+        "contam_10.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.01
+        },
+        "markov_0.01": {
+          "chi2": 0.01,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.03,
+          "block_homog": 0.0
+        },
+        "markov_0.02": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.02,
+          "sign_halfgauss": 0.01,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.02,
+          "ljung_box": 0.0,
+          "runs_test": 0.05,
+          "block_homog": 0.0
+        },
+        "markov_0.05": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.0,
+          "ljung_box": 0.44,
+          "runs_test": 0.97,
+          "block_homog": 0.0
+        },
+        "markov_0.1": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.01,
+          "discrete_ad": 0.02,
+          "higher_crit": 0.01,
+          "ljung_box": 1.0,
+          "runs_test": 1.0,
+          "block_homog": 0.0
+        },
+        "markov_0.15": {
+          "chi2": 0.03,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.05,
+          "discrete_ad": 0.04,
+          "higher_crit": 0.07,
+          "ljung_box": 1.0,
+          "runs_test": 1.0,
+          "block_homog": 0.0
+        },
+        "markov_0.2": {
+          "chi2": 0.04,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 0.07,
+          "discrete_ad": 0.06,
+          "higher_crit": 0.09,
+          "ljung_box": 1.0,
+          "runs_test": 1.0,
+          "block_homog": 0.0
+        },
+        "markov_0.3": {
+          "chi2": 0.06,
+          "tail_exceedance": 0.02,
+          "sign_halfgauss": 0.11,
+          "discrete_ad": 0.03,
+          "higher_crit": 0.09,
+          "ljung_box": 1.0,
+          "runs_test": 1.0,
+          "block_homog": 0.0
+        },
+        "markov_0.5": {
+          "chi2": 0.36,
+          "tail_exceedance": 0.07,
+          "sign_halfgauss": 0.3,
+          "discrete_ad": 0.15,
+          "higher_crit": 0.31,
+          "ljung_box": 1.0,
+          "runs_test": 1.0,
+          "block_homog": 0.04
+        },
+        "bimodal_sep1.0": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.13,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "bimodal_sep2.0": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "bimodal_sep3.0": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "periodic_10": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.01,
+          "block_homog": 0.0
+        },
+        "periodic_50": {
+          "chi2": 0.13,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.31,
+          "discrete_ad": 0.04,
+          "higher_crit": 0.08,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "periodic_100": {
+          "chi2": 0.01,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.03,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.02,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        }
+      },
+      "false_alarm_rates": {
+        "chi2": 0.0,
+        "tail_exceedance": 0.0,
+        "sign_halfgauss": 0.0,
+        "discrete_ad": 0.0,
+        "higher_crit": 0.01,
+        "ljung_box": 0.0,
+        "runs_test": 0.0,
+        "block_homog": 0.0
+      },
+      "pvalue_uniformity": {
+        "ks_stat": 0.11217818031772564,
+        "ks_pvalue": 0.5189618768601902,
+        "mean_pvalue": 0.46682711576849345,
+        "passes": 1
+      }
+    },
+    "sigmin": {
+      "mu": 0.0,
+      "sigma": 1.2778,
+      "power_matrix": {
+        "sigma+0.1%": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+0.2%": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+0.5%": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.02,
+          "higher_crit": 0.01,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+1.0%": {
+          "chi2": 0.01,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 0.02,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.01,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+2.0%": {
+          "chi2": 0.12,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 0.24,
+          "discrete_ad": 0.11,
+          "higher_crit": 0.23,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+3.0%": {
+          "chi2": 0.52,
+          "tail_exceedance": 0.11,
+          "sign_halfgauss": 0.67,
+          "discrete_ad": 0.32,
+          "higher_crit": 0.58,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+5.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.67,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 0.96,
+          "higher_crit": 0.99,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+7.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.91,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+10.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+15.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+20.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.01": {
+          "chi2": 0.01,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.03,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.02": {
+          "chi2": 0.01,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.03,
+          "discrete_ad": 0.1,
+          "higher_crit": 0.06,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.05": {
+          "chi2": 0.33,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.36,
+          "discrete_ad": 0.8,
+          "higher_crit": 0.72,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.1": {
+          "chi2": 0.99,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.99,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.15": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.02,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.2": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.3": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.08,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.5": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.94,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.7": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+1.0": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_50/49": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.01,
+          "discrete_ad": 0.02,
+          "higher_crit": 0.03,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_51/49": {
+          "chi2": 0.01,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.02,
+          "discrete_ad": 0.11,
+          "higher_crit": 0.06,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_52/48": {
+          "chi2": 0.16,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.28,
+          "discrete_ad": 0.54,
+          "higher_crit": 0.5,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_53/47": {
+          "chi2": 0.65,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.82,
+          "discrete_ad": 0.99,
+          "higher_crit": 0.95,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_55/44": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_56/43": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_60/40": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_65/35": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_2.5sig": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 0.02,
+          "higher_crit": 0.08,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_3.0sig": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 0.03,
+          "higher_crit": 0.14,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_3.5sig": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.01,
+          "ljung_box": 0.01,
+          "runs_test": 0.02,
+          "block_homog": 0.0
+        },
+        "trunc_4.0sig": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.01,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_4.5sig": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.01,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.01,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_5.0sig": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.02,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.01,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_5.5sig": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.01,
+          "block_homog": 0.0
+        },
+        "trunc_6.0sig": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.01,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_1.1x": {
+          "chi2": 0.08,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.1,
+          "discrete_ad": 0.09,
+          "higher_crit": 0.26,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_1.2x": {
+          "chi2": 0.95,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.91,
+          "discrete_ad": 0.49,
+          "higher_crit": 0.98,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_1.5x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_2.0x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_2.5x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_3.0x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_4.0x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.04,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_5.0x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.04,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "contam_0.1%": {
+          "chi2": 0.01,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 0.01,
+          "discrete_ad": 0.54,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "contam_0.5%": {
+          "chi2": 0.77,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 0.87,
+          "discrete_ad": 1.0,
+          "higher_crit": 0.05,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "contam_1.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 0.63,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.01
+        },
+        "contam_2.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "contam_5.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.01
+        },
+        "contam_10.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "markov_0.01": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.02,
+          "block_homog": 0.0
+        },
+        "markov_0.02": {
+          "chi2": 0.01,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.01,
+          "ljung_box": 0.0,
+          "runs_test": 0.09,
+          "block_homog": 0.0
+        },
+        "markov_0.05": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.0,
+          "ljung_box": 0.44,
+          "runs_test": 0.99,
+          "block_homog": 0.0
+        },
+        "markov_0.1": {
+          "chi2": 0.03,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.02,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.04,
+          "ljung_box": 1.0,
+          "runs_test": 1.0,
+          "block_homog": 0.0
+        },
+        "markov_0.15": {
+          "chi2": 0.02,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.02,
+          "discrete_ad": 0.02,
+          "higher_crit": 0.04,
+          "ljung_box": 1.0,
+          "runs_test": 1.0,
+          "block_homog": 0.0
+        },
+        "markov_0.2": {
+          "chi2": 0.04,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.04,
+          "discrete_ad": 0.06,
+          "higher_crit": 0.07,
+          "ljung_box": 1.0,
+          "runs_test": 1.0,
+          "block_homog": 0.0
+        },
+        "markov_0.3": {
+          "chi2": 0.03,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.09,
+          "discrete_ad": 0.03,
+          "higher_crit": 0.08,
+          "ljung_box": 1.0,
+          "runs_test": 1.0,
+          "block_homog": 0.0
+        },
+        "markov_0.5": {
+          "chi2": 0.26,
+          "tail_exceedance": 0.1,
+          "sign_halfgauss": 0.3,
+          "discrete_ad": 0.16,
+          "higher_crit": 0.25,
+          "ljung_box": 1.0,
+          "runs_test": 1.0,
+          "block_homog": 0.04
+        },
+        "bimodal_sep1.0": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "bimodal_sep2.0": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "bimodal_sep3.0": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "periodic_10": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.01,
+          "block_homog": 0.0
+        },
+        "periodic_50": {
+          "chi2": 0.11,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.21,
+          "discrete_ad": 0.04,
+          "higher_crit": 0.05,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "periodic_100": {
+          "chi2": 0.01,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.02,
+          "discrete_ad": 0.02,
+          "higher_crit": 0.0,
+          "ljung_box": 0.02,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        }
+      },
+      "false_alarm_rates": {
+        "chi2": 0.0,
+        "tail_exceedance": 0.0,
+        "sign_halfgauss": 0.0,
+        "discrete_ad": 0.0,
+        "higher_crit": 0.02,
+        "ljung_box": 0.0,
+        "runs_test": 0.0,
+        "block_homog": 0.0
+      },
+      "pvalue_uniformity": {
+        "ks_stat": 0.10766645928945306,
+        "ks_pvalue": 0.5710713422181413,
+        "mean_pvalue": 0.4654877318656508,
+        "passes": 1
+      }
+    },
+    "mu_quarter": {
+      "mu": 0.25,
+      "sigma": 1.55,
+      "power_matrix": {
+        "sigma+0.1%": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.01,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+0.2%": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+0.5%": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.03,
+          "higher_crit": 0.01,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+1.0%": {
+          "chi2": 0.03,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 0.02,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+2.0%": {
+          "chi2": 0.13,
+          "tail_exceedance": 0.03,
+          "sign_halfgauss": 0.16,
+          "discrete_ad": 0.13,
+          "higher_crit": 0.11,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+3.0%": {
+          "chi2": 0.5,
+          "tail_exceedance": 0.1,
+          "sign_halfgauss": 0.56,
+          "discrete_ad": 0.38,
+          "higher_crit": 0.42,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+5.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.44,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 0.97,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+7.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.85,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+10.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+15.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+20.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.01": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.01,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.02": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.04,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.05": {
+          "chi2": 0.12,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.67,
+          "higher_crit": 0.27,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.1": {
+          "chi2": 0.93,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 0.03,
+          "discrete_ad": 1.0,
+          "higher_crit": 0.99,
+          "ljung_box": 0.0,
+          "runs_test": 0.01,
+          "block_homog": 0.0
+        },
+        "mu+0.15": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.12,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.2": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.1,
+          "sign_halfgauss": 0.56,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.3": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.34,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.5": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.99,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.7": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.01,
+          "block_homog": 0.0
+        },
+        "mu+1.0": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.01,
+          "block_homog": 0.0
+        },
+        "sign_50/49": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.02,
+          "higher_crit": 0.01,
+          "ljung_box": 0.0,
+          "runs_test": 0.01,
+          "block_homog": 0.0
+        },
+        "sign_51/49": {
+          "chi2": 0.03,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.02,
+          "discrete_ad": 0.19,
+          "higher_crit": 0.04,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_52/48": {
+          "chi2": 0.28,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 0.05,
+          "discrete_ad": 0.81,
+          "higher_crit": 0.69,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_53/47": {
+          "chi2": 0.93,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.21,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_55/44": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 0.86,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_56/43": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.99,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_60/40": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_65/35": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.02,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_2.5sig": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 0.61,
+          "higher_crit": 0.49,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_3.0sig": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 0.04,
+          "higher_crit": 0.06,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_3.5sig": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.01,
+          "block_homog": 0.0
+        },
+        "trunc_4.0sig": {
+          "chi2": 0.01,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.01,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_4.5sig": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.01,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_5.0sig": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_5.5sig": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.01,
+          "block_homog": 0.0
+        },
+        "trunc_6.0sig": {
+          "chi2": 0.01,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.02,
+          "higher_crit": 0.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_1.1x": {
+          "chi2": 0.18,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.06,
+          "discrete_ad": 0.22,
+          "higher_crit": 0.16,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_1.2x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.82,
+          "discrete_ad": 0.84,
+          "higher_crit": 0.9,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_1.5x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_2.0x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_2.5x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_3.0x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.02,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_4.0x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.07,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_5.0x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.09,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "contam_0.1%": {
+          "chi2": 0.01,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.31,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "contam_0.5%": {
+          "chi2": 0.58,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 0.93,
+          "discrete_ad": 1.0,
+          "higher_crit": 0.04,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.01
+        },
+        "contam_1.0%": {
+          "chi2": 0.99,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 0.4,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "contam_2.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.01,
+          "block_homog": 0.0
+        },
+        "contam_5.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "contam_10.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "markov_0.01": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.03,
+          "block_homog": 0.0
+        },
+        "markov_0.02": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.08,
+          "block_homog": 0.0
+        },
+        "markov_0.05": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.0,
+          "ljung_box": 0.45,
+          "runs_test": 0.98,
+          "block_homog": 0.0
+        },
+        "markov_0.1": {
+          "chi2": 0.03,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.02,
+          "discrete_ad": 0.03,
+          "higher_crit": 0.02,
+          "ljung_box": 1.0,
+          "runs_test": 1.0,
+          "block_homog": 0.0
+        },
+        "markov_0.15": {
+          "chi2": 0.03,
+          "tail_exceedance": 0.02,
+          "sign_halfgauss": 0.02,
+          "discrete_ad": 0.05,
+          "higher_crit": 0.01,
+          "ljung_box": 1.0,
+          "runs_test": 1.0,
+          "block_homog": 0.0
+        },
+        "markov_0.2": {
+          "chi2": 0.09,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 0.03,
+          "discrete_ad": 0.08,
+          "higher_crit": 0.05,
+          "ljung_box": 1.0,
+          "runs_test": 1.0,
+          "block_homog": 0.0
+        },
+        "markov_0.3": {
+          "chi2": 0.05,
+          "tail_exceedance": 0.02,
+          "sign_halfgauss": 0.04,
+          "discrete_ad": 0.04,
+          "higher_crit": 0.05,
+          "ljung_box": 1.0,
+          "runs_test": 1.0,
+          "block_homog": 0.0
+        },
+        "markov_0.5": {
+          "chi2": 0.37,
+          "tail_exceedance": 0.08,
+          "sign_halfgauss": 0.2,
+          "discrete_ad": 0.22,
+          "higher_crit": 0.16,
+          "ljung_box": 1.0,
+          "runs_test": 1.0,
+          "block_homog": 0.04
+        },
+        "bimodal_sep1.0": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.15,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 0.96,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "bimodal_sep2.0": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "bimodal_sep3.0": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "periodic_10": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.02,
+          "block_homog": 0.0
+        },
+        "periodic_50": {
+          "chi2": 0.14,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 0.24,
+          "discrete_ad": 0.11,
+          "higher_crit": 0.02,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "periodic_100": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.01,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.01,
+          "block_homog": 0.0
+        }
+      },
+      "false_alarm_rates": {
+        "chi2": 0.0,
+        "tail_exceedance": 0.0,
+        "sign_halfgauss": 0.0,
+        "discrete_ad": 0.02,
+        "higher_crit": 0.0,
+        "ljung_box": 0.0,
+        "runs_test": 0.0,
+        "block_homog": 0.0
+      },
+      "pvalue_uniformity": {
+        "ks_stat": 0.09434522030912107,
+        "ks_pvalue": 0.7294453173492841,
+        "mean_pvalue": 0.5055332103617974,
+        "passes": 1
+      }
+    },
+    "mu_half": {
+      "mu": 0.5,
+      "sigma": 1.55,
+      "power_matrix": {
+        "sigma+0.1%": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+0.2%": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+0.5%": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.02,
+          "higher_crit": 0.01,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+1.0%": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 0.01,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.01,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+2.0%": {
+          "chi2": 0.14,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 0.16,
+          "discrete_ad": 0.12,
+          "higher_crit": 0.15,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+3.0%": {
+          "chi2": 0.5,
+          "tail_exceedance": 0.04,
+          "sign_halfgauss": 0.47,
+          "discrete_ad": 0.31,
+          "higher_crit": 0.41,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+5.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.16,
+          "sign_halfgauss": 0.98,
+          "discrete_ad": 0.99,
+          "higher_crit": 0.96,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+7.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.4,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+10.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.87,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+15.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+20.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.01": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.02": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.04,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.05": {
+          "chi2": 0.15,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.03,
+          "discrete_ad": 0.6,
+          "higher_crit": 0.36,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.1": {
+          "chi2": 0.96,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.17,
+          "discrete_ad": 1.0,
+          "higher_crit": 0.98,
+          "ljung_box": 0.0,
+          "runs_test": 0.01,
+          "block_homog": 0.0
+        },
+        "mu+0.15": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.63,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.01,
+          "block_homog": 0.0
+        },
+        "mu+0.2": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.3": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.01,
+          "block_homog": 0.0
+        },
+        "mu+0.5": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.09,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.7": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.71,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+1.0": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_50/49": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.02,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_51/49": {
+          "chi2": 0.02,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.01,
+          "discrete_ad": 0.14,
+          "higher_crit": 0.04,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_52/48": {
+          "chi2": 0.31,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.06,
+          "discrete_ad": 0.75,
+          "higher_crit": 0.64,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_53/47": {
+          "chi2": 0.95,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.3,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_55/44": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.94,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_56/43": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_60/40": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_65/35": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_2.5sig": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 0.15,
+          "higher_crit": 0.32,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_3.0sig": {
+          "chi2": 0.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 0.01,
+          "discrete_ad": 0.02,
+          "higher_crit": 0.02,
+          "ljung_box": 0.0,
+          "runs_test": 0.01,
+          "block_homog": 0.0
+        },
+        "trunc_3.5sig": {
+          "chi2": 0.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_4.0sig": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.01,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_4.5sig": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.01,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_5.0sig": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_5.5sig": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.01,
+          "block_homog": 0.0
+        },
+        "trunc_6.0sig": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_1.1x": {
+          "chi2": 0.3,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.21,
+          "discrete_ad": 0.26,
+          "higher_crit": 0.28,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_1.2x": {
+          "chi2": 0.99,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 0.96,
+          "discrete_ad": 0.96,
+          "higher_crit": 0.97,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_1.5x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_2.0x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_2.5x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_3.0x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_4.0x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_5.0x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.02,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "contam_0.1%": {
+          "chi2": 0.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 0.2,
+          "discrete_ad": 0.28,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "contam_0.5%": {
+          "chi2": 0.58,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 0.04,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.01
+        },
+        "contam_1.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 0.41,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "contam_2.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "contam_5.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.01
+        },
+        "contam_10.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "markov_0.01": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "markov_0.02": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.02,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.09,
+          "block_homog": 0.0
+        },
+        "markov_0.05": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.01,
+          "ljung_box": 0.41,
+          "runs_test": 0.93,
+          "block_homog": 0.0
+        },
+        "markov_0.1": {
+          "chi2": 0.01,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.01,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.01,
+          "ljung_box": 1.0,
+          "runs_test": 1.0,
+          "block_homog": 0.0
+        },
+        "markov_0.15": {
+          "chi2": 0.01,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.02,
+          "discrete_ad": 0.03,
+          "higher_crit": 0.04,
+          "ljung_box": 1.0,
+          "runs_test": 1.0,
+          "block_homog": 0.0
+        },
+        "markov_0.2": {
+          "chi2": 0.02,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 0.02,
+          "discrete_ad": 0.06,
+          "higher_crit": 0.05,
+          "ljung_box": 1.0,
+          "runs_test": 1.0,
+          "block_homog": 0.0
+        },
+        "markov_0.3": {
+          "chi2": 0.03,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 0.04,
+          "discrete_ad": 0.04,
+          "higher_crit": 0.05,
+          "ljung_box": 1.0,
+          "runs_test": 1.0,
+          "block_homog": 0.0
+        },
+        "markov_0.5": {
+          "chi2": 0.32,
+          "tail_exceedance": 0.05,
+          "sign_halfgauss": 0.23,
+          "discrete_ad": 0.14,
+          "higher_crit": 0.17,
+          "ljung_box": 1.0,
+          "runs_test": 1.0,
+          "block_homog": 0.04
+        },
+        "bimodal_sep1.0": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.05,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 0.99,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "bimodal_sep2.0": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "bimodal_sep3.0": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "periodic_10": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.01,
+          "block_homog": 0.0
+        },
+        "periodic_50": {
+          "chi2": 0.2,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.31,
+          "discrete_ad": 0.09,
+          "higher_crit": 0.07,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "periodic_100": {
+          "chi2": 0.01,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.01,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.01,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        }
+      },
+      "false_alarm_rates": {
+        "chi2": 0.0,
+        "tail_exceedance": 0.0,
+        "sign_halfgauss": 0.0,
+        "discrete_ad": 0.0,
+        "higher_crit": 0.0,
+        "ljung_box": 0.0,
+        "runs_test": 0.0,
+        "block_homog": 0.0
+      },
+      "pvalue_uniformity": {
+        "ks_stat": 0.08228818289024642,
+        "ks_pvalue": 0.8597583336081112,
+        "mean_pvalue": 0.501019642765522,
+        "passes": 1
+      }
+    },
+    "mu_near_half": {
+      "mu": 0.499,
+      "sigma": 1.55,
+      "power_matrix": {
+        "sigma+0.1%": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+0.2%": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+0.5%": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.02,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+1.0%": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 0.01,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.01,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+2.0%": {
+          "chi2": 0.15,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 0.16,
+          "discrete_ad": 0.12,
+          "higher_crit": 0.13,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+3.0%": {
+          "chi2": 0.5,
+          "tail_exceedance": 0.04,
+          "sign_halfgauss": 0.47,
+          "discrete_ad": 0.3,
+          "higher_crit": 0.37,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+5.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.16,
+          "sign_halfgauss": 0.98,
+          "discrete_ad": 0.99,
+          "higher_crit": 0.96,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+7.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.4,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+10.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.87,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+15.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+20.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.01": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.02": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.04,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.05": {
+          "chi2": 0.16,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.03,
+          "discrete_ad": 0.6,
+          "higher_crit": 0.35,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.1": {
+          "chi2": 0.96,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.17,
+          "discrete_ad": 1.0,
+          "higher_crit": 0.97,
+          "ljung_box": 0.0,
+          "runs_test": 0.01,
+          "block_homog": 0.0
+        },
+        "mu+0.15": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.63,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.01,
+          "block_homog": 0.0
+        },
+        "mu+0.2": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.01,
+          "block_homog": 0.0
+        },
+        "mu+0.3": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.01,
+          "block_homog": 0.0
+        },
+        "mu+0.5": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.09,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.7": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.71,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+1.0": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_50/49": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.02,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_51/49": {
+          "chi2": 0.02,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.01,
+          "discrete_ad": 0.14,
+          "higher_crit": 0.04,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_52/48": {
+          "chi2": 0.31,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.06,
+          "discrete_ad": 0.75,
+          "higher_crit": 0.63,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_53/47": {
+          "chi2": 0.94,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.3,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_55/44": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.93,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_56/43": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_60/40": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_65/35": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_2.5sig": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 0.15,
+          "higher_crit": 0.32,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_3.0sig": {
+          "chi2": 0.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 0.01,
+          "discrete_ad": 0.02,
+          "higher_crit": 0.02,
+          "ljung_box": 0.0,
+          "runs_test": 0.01,
+          "block_homog": 0.0
+        },
+        "trunc_3.5sig": {
+          "chi2": 0.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_4.0sig": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_4.5sig": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.01,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_5.0sig": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_5.5sig": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.01,
+          "block_homog": 0.0
+        },
+        "trunc_6.0sig": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_1.1x": {
+          "chi2": 0.31,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.21,
+          "discrete_ad": 0.24,
+          "higher_crit": 0.29,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_1.2x": {
+          "chi2": 0.99,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 0.94,
+          "discrete_ad": 0.94,
+          "higher_crit": 0.97,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_1.5x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_2.0x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_2.5x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_3.0x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_4.0x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_5.0x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.02,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "contam_0.1%": {
+          "chi2": 0.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 0.21,
+          "discrete_ad": 0.28,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "contam_0.5%": {
+          "chi2": 0.57,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 0.04,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.01
+        },
+        "contam_1.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 0.4,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "contam_2.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "contam_5.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.01
+        },
+        "contam_10.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "markov_0.01": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "markov_0.02": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.02,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.09,
+          "block_homog": 0.0
+        },
+        "markov_0.05": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.0,
+          "ljung_box": 0.42,
+          "runs_test": 0.93,
+          "block_homog": 0.0
+        },
+        "markov_0.1": {
+          "chi2": 0.01,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.01,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.01,
+          "ljung_box": 1.0,
+          "runs_test": 1.0,
+          "block_homog": 0.0
+        },
+        "markov_0.15": {
+          "chi2": 0.02,
+          "tail_exceedance": 0.02,
+          "sign_halfgauss": 0.02,
+          "discrete_ad": 0.03,
+          "higher_crit": 0.03,
+          "ljung_box": 1.0,
+          "runs_test": 1.0,
+          "block_homog": 0.0
+        },
+        "markov_0.2": {
+          "chi2": 0.02,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 0.02,
+          "discrete_ad": 0.06,
+          "higher_crit": 0.05,
+          "ljung_box": 1.0,
+          "runs_test": 1.0,
+          "block_homog": 0.0
+        },
+        "markov_0.3": {
+          "chi2": 0.04,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 0.04,
+          "discrete_ad": 0.04,
+          "higher_crit": 0.04,
+          "ljung_box": 1.0,
+          "runs_test": 1.0,
+          "block_homog": 0.0
+        },
+        "markov_0.5": {
+          "chi2": 0.32,
+          "tail_exceedance": 0.05,
+          "sign_halfgauss": 0.21,
+          "discrete_ad": 0.14,
+          "higher_crit": 0.16,
+          "ljung_box": 1.0,
+          "runs_test": 1.0,
+          "block_homog": 0.05
+        },
+        "bimodal_sep1.0": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.05,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 0.99,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "bimodal_sep2.0": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "bimodal_sep3.0": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "periodic_10": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.01,
+          "block_homog": 0.0
+        },
+        "periodic_50": {
+          "chi2": 0.2,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.31,
+          "discrete_ad": 0.09,
+          "higher_crit": 0.06,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "periodic_100": {
+          "chi2": 0.01,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.01,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.01,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        }
+      },
+      "false_alarm_rates": {
+        "chi2": 0.0,
+        "tail_exceedance": 0.0,
+        "sign_halfgauss": 0.0,
+        "discrete_ad": 0.01,
+        "higher_crit": 0.0,
+        "ljung_box": 0.0,
+        "runs_test": 0.0,
+        "block_homog": 0.0
+      },
+      "pvalue_uniformity": {
+        "ks_stat": 0.08618472718081072,
+        "ks_pvalue": 0.8206738403763748,
+        "mean_pvalue": 0.49955529110319646,
+        "passes": 1
+      }
+    },
+    "keygen_512": {
+      "mu": 0.0,
+      "sigma": 4.05,
+      "power_matrix": {
+        "sigma+0.1%": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+0.2%": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+0.5%": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.02,
+          "higher_crit": 0.01,
+          "ljung_box": 0.0,
+          "runs_test": 0.01,
+          "block_homog": 0.0
+        },
+        "sigma+1.0%": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.02,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.03,
+          "ljung_box": 0.0,
+          "runs_test": 0.01,
+          "block_homog": 0.0
+        },
+        "sigma+2.0%": {
+          "chi2": 0.05,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.06,
+          "discrete_ad": 0.13,
+          "higher_crit": 0.12,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+3.0%": {
+          "chi2": 0.33,
+          "tail_exceedance": 0.04,
+          "sign_halfgauss": 0.44,
+          "discrete_ad": 0.32,
+          "higher_crit": 0.43,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+5.0%": {
+          "chi2": 0.98,
+          "tail_exceedance": 0.28,
+          "sign_halfgauss": 0.99,
+          "discrete_ad": 0.99,
+          "higher_crit": 0.99,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+7.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.69,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+10.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.99,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+15.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+20.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.01": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.01,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.02": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.01,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.05": {
+          "chi2": 0.01,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.03,
+          "discrete_ad": 0.07,
+          "higher_crit": 0.02,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.1": {
+          "chi2": 0.02,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.03,
+          "discrete_ad": 0.39,
+          "higher_crit": 0.11,
+          "ljung_box": 0.0,
+          "runs_test": 0.01,
+          "block_homog": 0.0
+        },
+        "mu+0.15": {
+          "chi2": 0.11,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.06,
+          "discrete_ad": 0.79,
+          "higher_crit": 0.44,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.2": {
+          "chi2": 0.44,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.22,
+          "discrete_ad": 0.97,
+          "higher_crit": 0.83,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.3": {
+          "chi2": 0.97,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.59,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.5": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.7": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+1.0": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.09,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.01,
+          "block_homog": 0.0
+        },
+        "sign_50/49": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.01,
+          "discrete_ad": 0.02,
+          "higher_crit": 0.01,
+          "ljung_box": 0.0,
+          "runs_test": 0.01,
+          "block_homog": 0.0
+        },
+        "sign_51/49": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.01,
+          "discrete_ad": 0.18,
+          "higher_crit": 0.05,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_52/48": {
+          "chi2": 0.09,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.18,
+          "discrete_ad": 0.75,
+          "higher_crit": 0.55,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_53/47": {
+          "chi2": 0.69,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.63,
+          "discrete_ad": 1.0,
+          "higher_crit": 0.99,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_55/44": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_56/43": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_60/40": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_65/35": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_2.5sig": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 0.17,
+          "higher_crit": 0.6,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_3.0sig": {
+          "chi2": 0.01,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 0.02,
+          "discrete_ad": 0.02,
+          "higher_crit": 0.01,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_3.5sig": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 0.02,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.01,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_4.0sig": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.01,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.01,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_4.5sig": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.02,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.01,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_5.0sig": {
+          "chi2": 0.01,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.02,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_5.5sig": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.01,
+          "block_homog": 0.0
+        },
+        "trunc_6.0sig": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.02,
+          "discrete_ad": 0.02,
+          "higher_crit": 0.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_1.1x": {
+          "chi2": 0.06,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.16,
+          "discrete_ad": 0.06,
+          "higher_crit": 0.02,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_1.2x": {
+          "chi2": 0.6,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.78,
+          "discrete_ad": 0.14,
+          "higher_crit": 0.14,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_1.5x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 0.99,
+          "higher_crit": 0.99,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_2.0x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_2.5x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_3.0x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_4.0x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_5.0x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "contam_0.1%": {
+          "chi2": 0.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 0.03,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "contam_0.5%": {
+          "chi2": 0.68,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 0.49,
+          "higher_crit": 0.05,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "contam_1.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 0.57,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "contam_2.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.02,
+          "block_homog": 0.0
+        },
+        "contam_5.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "contam_10.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "markov_0.01": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.03,
+          "block_homog": 0.0
+        },
+        "markov_0.02": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.02,
+          "sign_halfgauss": 0.01,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.01,
+          "ljung_box": 0.0,
+          "runs_test": 0.07,
+          "block_homog": 0.0
+        },
+        "markov_0.05": {
+          "chi2": 0.02,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.01,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.0,
+          "ljung_box": 0.44,
+          "runs_test": 0.95,
+          "block_homog": 0.0
+        },
+        "markov_0.1": {
+          "chi2": 0.04,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.02,
+          "discrete_ad": 0.02,
+          "higher_crit": 0.02,
+          "ljung_box": 1.0,
+          "runs_test": 1.0,
+          "block_homog": 0.0
+        },
+        "markov_0.15": {
+          "chi2": 0.04,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.03,
+          "discrete_ad": 0.04,
+          "higher_crit": 0.02,
+          "ljung_box": 1.0,
+          "runs_test": 1.0,
+          "block_homog": 0.0
+        },
+        "markov_0.2": {
+          "chi2": 0.08,
+          "tail_exceedance": 0.03,
+          "sign_halfgauss": 0.1,
+          "discrete_ad": 0.08,
+          "higher_crit": 0.03,
+          "ljung_box": 1.0,
+          "runs_test": 1.0,
+          "block_homog": 0.0
+        },
+        "markov_0.3": {
+          "chi2": 0.33,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.23,
+          "discrete_ad": 0.05,
+          "higher_crit": 0.07,
+          "ljung_box": 1.0,
+          "runs_test": 1.0,
+          "block_homog": 0.0
+        },
+        "markov_0.5": {
+          "chi2": 0.84,
+          "tail_exceedance": 0.04,
+          "sign_halfgauss": 0.68,
+          "discrete_ad": 0.25,
+          "higher_crit": 0.27,
+          "ljung_box": 1.0,
+          "runs_test": 1.0,
+          "block_homog": 0.01
+        },
+        "bimodal_sep1.0": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.99,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "bimodal_sep2.0": {
+          "chi2": 0.99,
+          "tail_exceedance": 0.58,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "bimodal_sep3.0": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.01,
+          "block_homog": 0.0
+        },
+        "periodic_10": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.02,
+          "block_homog": 0.0
+        },
+        "periodic_50": {
+          "chi2": 0.62,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.83,
+          "discrete_ad": 0.08,
+          "higher_crit": 0.06,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "periodic_100": {
+          "chi2": 0.02,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.09,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.01,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        }
+      },
+      "false_alarm_rates": {
+        "chi2": 0.0,
+        "tail_exceedance": 0.0,
+        "sign_halfgauss": 0.0,
+        "discrete_ad": 0.0,
+        "higher_crit": 0.0,
+        "ljung_box": 0.0,
+        "runs_test": 0.0,
+        "block_homog": 0.0
+      },
+      "pvalue_uniformity": {
+        "ks_stat": 0.12421661499651926,
+        "ks_pvalue": 0.39121727523225835,
+        "mean_pvalue": 0.4967427118459444,
+        "passes": 1
+      }
+    },
+    "keygen_1024": {
+      "mu": 0.0,
+      "sigma": 2.87,
+      "power_matrix": {
+        "sigma+0.1%": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.01,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+0.2%": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.01,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.01,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+0.5%": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.03,
+          "higher_crit": 0.04,
+          "ljung_box": 0.0,
+          "runs_test": 0.01,
+          "block_homog": 0.0
+        },
+        "sigma+1.0%": {
+          "chi2": 0.01,
+          "tail_exceedance": 0.02,
+          "sign_halfgauss": 0.01,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.06,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+2.0%": {
+          "chi2": 0.07,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 0.11,
+          "discrete_ad": 0.1,
+          "higher_crit": 0.3,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+3.0%": {
+          "chi2": 0.34,
+          "tail_exceedance": 0.06,
+          "sign_halfgauss": 0.48,
+          "discrete_ad": 0.33,
+          "higher_crit": 0.66,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+5.0%": {
+          "chi2": 0.98,
+          "tail_exceedance": 0.37,
+          "sign_halfgauss": 0.99,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+7.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.78,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+10.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+15.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sigma+20.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.01": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.01,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.02": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.03,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.02,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.05": {
+          "chi2": 0.01,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.04,
+          "discrete_ad": 0.17,
+          "higher_crit": 0.13,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.1": {
+          "chi2": 0.09,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.17,
+          "discrete_ad": 0.72,
+          "higher_crit": 0.6,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.15": {
+          "chi2": 0.49,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.4,
+          "discrete_ad": 0.99,
+          "higher_crit": 0.95,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.2": {
+          "chi2": 0.95,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.88,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.3": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.5": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "mu+0.7": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.03,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.01,
+          "block_homog": 0.0
+        },
+        "mu+1.0": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.45,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_50/49": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.02,
+          "discrete_ad": 0.02,
+          "higher_crit": 0.04,
+          "ljung_box": 0.0,
+          "runs_test": 0.01,
+          "block_homog": 0.0
+        },
+        "sign_51/49": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.01,
+          "discrete_ad": 0.14,
+          "higher_crit": 0.08,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_52/48": {
+          "chi2": 0.08,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.18,
+          "discrete_ad": 0.76,
+          "higher_crit": 0.76,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_53/47": {
+          "chi2": 0.66,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.74,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_55/44": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_56/43": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_60/40": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "sign_65/35": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_2.5sig": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 0.13,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_3.0sig": {
+          "chi2": 0.78,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 0.54,
+          "discrete_ad": 0.02,
+          "higher_crit": 0.03,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_3.5sig": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.01,
+          "ljung_box": 0.0,
+          "runs_test": 0.01,
+          "block_homog": 0.0
+        },
+        "trunc_4.0sig": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.01,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_4.5sig": {
+          "chi2": 0.01,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.02,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_5.0sig": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.01,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "trunc_5.5sig": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.02,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.01,
+          "block_homog": 0.0
+        },
+        "trunc_6.0sig": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.02,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.01,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_1.1x": {
+          "chi2": 0.1,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.26,
+          "discrete_ad": 0.11,
+          "higher_crit": 0.14,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_1.2x": {
+          "chi2": 0.85,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.91,
+          "discrete_ad": 0.35,
+          "higher_crit": 0.51,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_1.5x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_2.0x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_2.5x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_3.0x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_4.0x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.02,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "table_5.0x": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "contam_0.1%": {
+          "chi2": 0.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 0.08,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.01,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "contam_0.5%": {
+          "chi2": 0.91,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 0.83,
+          "higher_crit": 0.22,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "contam_1.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 0.93,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "contam_2.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "contam_5.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.01
+        },
+        "contam_10.0%": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "markov_0.01": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.0,
+          "ljung_box": 0.01,
+          "runs_test": 0.03,
+          "block_homog": 0.0
+        },
+        "markov_0.02": {
+          "chi2": 0.02,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 0.0,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.02,
+          "ljung_box": 0.0,
+          "runs_test": 0.06,
+          "block_homog": 0.0
+        },
+        "markov_0.05": {
+          "chi2": 0.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.02,
+          "discrete_ad": 0.0,
+          "higher_crit": 0.0,
+          "ljung_box": 0.46,
+          "runs_test": 0.97,
+          "block_homog": 0.0
+        },
+        "markov_0.1": {
+          "chi2": 0.01,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.01,
+          "discrete_ad": 0.02,
+          "higher_crit": 0.04,
+          "ljung_box": 1.0,
+          "runs_test": 1.0,
+          "block_homog": 0.0
+        },
+        "markov_0.15": {
+          "chi2": 0.01,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.05,
+          "discrete_ad": 0.05,
+          "higher_crit": 0.07,
+          "ljung_box": 1.0,
+          "runs_test": 1.0,
+          "block_homog": 0.0
+        },
+        "markov_0.2": {
+          "chi2": 0.06,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 0.07,
+          "discrete_ad": 0.11,
+          "higher_crit": 0.13,
+          "ljung_box": 1.0,
+          "runs_test": 1.0,
+          "block_homog": 0.0
+        },
+        "markov_0.3": {
+          "chi2": 0.17,
+          "tail_exceedance": 0.01,
+          "sign_halfgauss": 0.16,
+          "discrete_ad": 0.06,
+          "higher_crit": 0.14,
+          "ljung_box": 1.0,
+          "runs_test": 1.0,
+          "block_homog": 0.0
+        },
+        "markov_0.5": {
+          "chi2": 0.67,
+          "tail_exceedance": 0.04,
+          "sign_halfgauss": 0.62,
+          "discrete_ad": 0.23,
+          "higher_crit": 0.44,
+          "ljung_box": 1.0,
+          "runs_test": 1.0,
+          "block_homog": 0.03
+        },
+        "bimodal_sep1.0": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.99,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "bimodal_sep2.0": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.04,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "bimodal_sep3.0": {
+          "chi2": 1.0,
+          "tail_exceedance": 1.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "periodic_10": {
+          "chi2": 1.0,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 1.0,
+          "discrete_ad": 1.0,
+          "higher_crit": 1.0,
+          "ljung_box": 0.0,
+          "runs_test": 0.03,
+          "block_homog": 0.0
+        },
+        "periodic_50": {
+          "chi2": 0.45,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.57,
+          "discrete_ad": 0.09,
+          "higher_crit": 0.11,
+          "ljung_box": 0.0,
+          "runs_test": 0.0,
+          "block_homog": 0.0
+        },
+        "periodic_100": {
+          "chi2": 0.03,
+          "tail_exceedance": 0.0,
+          "sign_halfgauss": 0.06,
+          "discrete_ad": 0.01,
+          "higher_crit": 0.03,
+          "ljung_box": 0.01,
+          "runs_test": 0.01,
+          "block_homog": 0.0
+        }
+      },
+      "false_alarm_rates": {
+        "chi2": 0.0,
+        "tail_exceedance": 0.0,
+        "sign_halfgauss": 0.0,
+        "discrete_ad": 0.0,
+        "higher_crit": 0.01,
+        "ljung_box": 0.0,
+        "runs_test": 0.0,
+        "block_homog": 0.0
+      },
+      "pvalue_uniformity": {
+        "ks_stat": 0.11738448040522875,
+        "ks_pvalue": 0.46140958644229213,
+        "mean_pvalue": 0.4628356528970091,
+        "passes": 1
+      }
+    }
+  }
+}

@@ -10,9 +10,24 @@ Code from the paper available at: https://eprint.iacr.org/2019/1411
 
 SAGA (Statistically Acceptable GAussians) is a test suite proposal for verfying statistical correctness for univariate and multivariate Gaussians. The paper accompanying this code has been published at PQCrypto 2020 and is also available on [ePrint](https://eprint.iacr.org/2019/1411). The following will briefly describe how to setup and use the python script.
 
+## Scope of testing
+
+SAGA's **statistical layer** detects implementation bugs — distributional deviations of order δ ≳ 1/√N. It does not certify proof-level security properties (Rényi divergence R_a − 1 ≲ 2⁻⁷⁵), which require the **analytic certification layer** (`certification.py`). It also does not detect trace-level side-channel leakage; SAGA-passing must not be advertised as side-channel assurance. See [BLLSS18], [Pre17] for the Rényi divergence framework and [QA25], [ZLYW23] for attacks that succeed against statistically perfect implementations.
+
 ## Installation
 
-This standalone implementation should be able to run on most machines. We have provided a `requirements.txt` file to install all the dependencies; install these can be done by simple running `pip install -r requirements.txt` for Python 2 or `pip3 install -r requirements.txt` for Python 3.
+Requires Python ≥ 3.10. Install with:
+
+```
+pip install ".[dev]"
+```
+
+Run tests:
+
+```
+python code/generate_test_vectors.py --outdir code/test_vectors --n 10000
+pytest code/tests/ -v
+```
 
 ## How to use
 

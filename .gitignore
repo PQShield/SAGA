@@ -1,0 +1,21 @@
+__pycache__/
+*.pyc
+*.egg-info/
+dist/
+build/
+.eggs/
+code/test_vectors/
+code/baseline_results.json
+code/*.eps
+code/samples.txt
+.pytest_cache/
+
+# Original HPRR20 reference sample data (~530MB); preserved in the
+# pqcrypto2020-as-published tag. Restore with:
+#   git checkout pqcrypto2020-as-published -- code/testdata
+code/testdata/
+
+# macOS / generated artifacts
+.DS_Store
+figures/
+code/power_matrix.json
