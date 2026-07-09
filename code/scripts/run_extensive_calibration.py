@@ -18,110 +18,17 @@ from scipy.stats import kstest
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-from saga import UnivariateSamples, make_gaussian_pdt
+from saga import UnivariateSamples
+from distributions import pdt_arrays
+from flaws import (
+    gen_perfect, gen_sigma_shift, gen_mu_shift, gen_sign_coupling,
+    gen_tail_truncation, gen_table_error, gen_contamination, gen_markov,
+    gen_bimodal, gen_periodic,
+)
 from univariate_tests import (
     tail_exceedance, sign_halfgaussian, discrete_anderson_darling,
     higher_criticism, ljung_box, runs_test, block_homogeneity,
 )
-
-
-# ---------------------------------------------------------------------------
-# PDT helpers
-# ---------------------------------------------------------------------------
-
-def _pdt_arrays(mu, sigma, tau=14):
-    pdt = make_gaussian_pdt(mu, sigma)
-    support = np.array(sorted(pdt.keys()))
-    probs = np.array([pdt[z] for z in support])
-    return support, probs
-
-
-# ---------------------------------------------------------------------------
-# Flaw generators
-# ---------------------------------------------------------------------------
-
-def gen_perfect(rng, mu, sigma, n):
-    s, p = _pdt_arrays(mu, sigma)
-    return rng.choice(s, size=n, p=p).tolist()
-
-
-def gen_sigma_shift(rng, mu, sigma, n, epsilon):
-    s, p = _pdt_arrays(mu, sigma * (1 + epsilon))
-    return rng.choice(s, size=n, p=p).tolist()
-
-
-def gen_mu_shift(rng, mu, sigma, n, delta):
-    s, p = _pdt_arrays(mu + delta, sigma)
-    return rng.choice(s, size=n, p=p).tolist()
-
-
-def gen_sign_coupling(rng, mu, sigma, n, bias):
-    s, p = _pdt_arrays(mu, sigma)
-    p_biased = p.copy()
-    for i, z in enumerate(s):
-        if z > mu:
-            p_biased[i] *= bias / 0.5
-        elif z < mu:
-            p_biased[i] *= (1 - bias) / 0.5
-    p_biased /= p_biased.sum()
-    return rng.choice(s, size=n, p=p_biased).tolist()
-
-
-def gen_tail_truncation(rng, mu, sigma, n, k_sigma):
-    s, p = _pdt_arrays(mu, sigma)
-    mask = np.abs(s - mu) <= k_sigma * sigma
-    p_trunc = p * mask
-    p_trunc /= p_trunc.sum()
-    return rng.choice(s, size=n, p=p_trunc).tolist()
-
-
-def gen_table_error(rng, mu, sigma, n, factor):
-    s, p = _pdt_arrays(mu, sigma)
-    mode_idx = np.argmax(p)
-    idx = min(mode_idx + 2, len(p) - 1)
-    p_err = p.copy()
-    p_err[idx] *= factor
-    p_err /= p_err.sum()
-    return rng.choice(s, size=n, p=p_err).tolist()
-
-
-def gen_contamination(rng, mu, sigma, n, epsilon):
-    s, p = _pdt_arrays(mu, sigma)
-    p_cont = (1 - epsilon) * p + epsilon / len(p)
-    p_cont /= p_cont.sum()
-    return rng.choice(s, size=n, p=p_cont).tolist()
-
-
-def gen_markov(rng, mu, sigma, n, rho):
-    s, p = _pdt_arrays(mu, sigma)
-    samples = [rng.choice(s, p=p)]
-    for _ in range(n - 1):
-        if rng.random() < rho:
-            samples.append(samples[-1])
-        else:
-            samples.append(rng.choice(s, p=p))
-    return [int(x) for x in samples]
-
-
-def gen_bimodal(rng, mu, sigma, n, separation):
-    """Mix two shifted Gaussians — creates excess kurtosis."""
-    s1, p1 = _pdt_arrays(mu - separation, sigma * 0.8)
-    s2, p2 = _pdt_arrays(mu + separation, sigma * 0.8)
-    half = n // 2
-    a = rng.choice(s1, size=half, p=p1).tolist()
-    b = rng.choice(s2, size=n - half, p=p2).tolist()
-    combined = a + b
-    rng.shuffle(combined)
-    return [int(x) for x in combined]
-
-
-def gen_periodic(rng, mu, sigma, n, period):
-    """Periodic pattern in the sample stream."""
-    s, p = _pdt_arrays(mu, sigma)
-    samples = rng.choice(s, size=n, p=p).tolist()
-    for i in range(0, n, period):
-        samples[i] = int(round(mu))
-    return samples
 
 
 # ---------------------------------------------------------------------------
@@ -283,7 +190,7 @@ def compute_false_alarm_rates(mu, sigma, n, reps, alpha, seed):
 # ---------------------------------------------------------------------------
 
 def pvalue_uniformity(mu, sigma, n, reps, seed):
-    support, probs = _pdt_arrays(mu, sigma)
+    support, probs = pdt_arrays(mu, sigma)
     pvalues = []
     for r in range(reps):
         rng = np.random.default_rng(seed + r)
