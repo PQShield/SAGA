@@ -517,28 +517,20 @@ def block_homogeneity(mu, sigma, samples, n_blocks=10, tau=14,
         hist, _ = np.histogram(block, bins=bin_edges)
         observed[b] = hist
 
-    col_totals = observed.sum(axis=0)
-    row_totals = observed.sum(axis=1)
-    grand_total = observed.sum()
-
-    if grand_total == 0:
+    if observed.sum() == 0:
         return {"test": "block_homogeneity", "statistic": 0.0,
                 "pvalue": 1.0, "passes": True}
 
-    chi2_stat = 0.0
-    for b in range(n_blocks):
-        for j in range(nbins):
-            expected = row_totals[b] * col_totals[j] / grand_total
-            if expected > 0:
-                chi2_stat += (observed[b][j] - expected) ** 2 / expected
-
-    df = (n_blocks - 1) * (nbins - 1)
-    if df <= 0:
+    # Drop empty bins/blocks: chi2_contingency needs all margins > 0, and an
+    # empty bin carries no information (it also should not inflate the degrees
+    # of freedom, as the former hand-rolled version did).
+    from scipy.stats import chi2_contingency
+    obs = observed[np.ix_(observed.sum(axis=1) > 0, observed.sum(axis=0) > 0)]
+    if obs.shape[0] < 2 or obs.shape[1] < 2:
         return {"test": "block_homogeneity", "statistic": 0.0,
                 "pvalue": 1.0, "passes": True}
 
-    from scipy.stats import chi2 as chi2_dist
-    pvalue = 1 - chi2_dist.cdf(chi2_stat, df)
+    chi2_stat, pvalue, df, _ = chi2_contingency(obs, correction=False)
 
     return {
         "test": "block_homogeneity",
@@ -594,9 +586,9 @@ def run_extended_battery(mu, sigma, samples, tau=14, alpha=0.001,
     }
     pvals = np.clip(np.array(list(component_pvalues.values()), dtype=float),
                     1e-300, 1.0)
-    from scipy.stats import chi2 as _chi2
-    fisher_stat = float(-2 * np.sum(np.log(pvals)))
-    global_pvalue = float(_chi2.sf(fisher_stat, 2 * len(pvals)))
+    from scipy.stats import combine_pvalues
+    _fisher = combine_pvalues(pvals, method='fisher')
+    fisher_stat, global_pvalue = float(_fisher.statistic), float(_fisher.pvalue)
 
     results["component_pvalues"] = {k: float(v)
                                     for k, v in component_pvalues.items()}

@@ -14,7 +14,7 @@ Tests:
 import numpy as np
 from math import sqrt
 from scipy.stats import kstest, chi2, norm
-from scipy.stats import false_discovery_control
+from scipy.stats import false_discovery_control, combine_pvalues
 
 
 # ---------------------------------------------------------------------------
@@ -61,8 +61,8 @@ def fisher_bh_meta(pvalues, alpha=0.001):
     pvalues = np.clip(pvalues, 1e-300, 1.0)
     m = len(pvalues)
 
-    fisher_stat = -2 * np.sum(np.log(pvalues))
-    fisher_pval = 1 - chi2.cdf(fisher_stat, 2 * m)
+    _fisher = combine_pvalues(pvalues, method='fisher')
+    fisher_stat, fisher_pval = float(_fisher.statistic), float(_fisher.pvalue)
 
     bh_rejected = false_discovery_control(pvalues, method='bh')
     n_rejected = int(np.sum(bh_rejected < alpha))
@@ -205,8 +205,8 @@ def fft_domain_battery(sigma, data, alpha=0.001):
             hc_i = sqrt(m) * abs((i + 1) / m - p) / sqrt(expected * (1 - expected))
             hc_stat = max(hc_stat, hc_i)
 
-    fisher_stat = -2 * np.sum(np.log(all_pvals))
-    fisher_pval = 1 - chi2.cdf(fisher_stat, 2 * m)
+    _fisher = combine_pvalues(all_pvals, method='fisher')
+    fisher_stat, fisher_pval = float(_fisher.statistic), float(_fisher.pvalue)
 
     results["higher_criticism_stat"] = float(hc_stat)
     results["fisher_pvalue"] = float(fisher_pval)
@@ -463,8 +463,8 @@ def run_multivariate_battery(sigma, data, cov_normalized, nsamples,
         bh_localized_flaw = results["fisher_bh"]["bh_rejected_count"] > 0
     pvals = np.clip(np.array(list(component_pvalues.values()), dtype=float),
                     1e-300, 1.0)
-    fisher_stat = float(-2 * np.sum(np.log(pvals)))
-    global_pvalue = float(chi2.sf(fisher_stat, 2 * len(pvals)))
+    _fisher = combine_pvalues(pvals, method='fisher')
+    fisher_stat, global_pvalue = float(_fisher.statistic), float(_fisher.pvalue)
 
     k = len(pvals)
     results["component_pvalues"] = {kk: float(v)
