@@ -50,6 +50,23 @@ class TestGoodVectors:
                         if isinstance(r, dict) and not r.get("passes", True))
         )
 
+    def test_extended_battery_default_samples(self, good_univariate_vector):
+        """The default (no `samples=`) path must use the ordered samples.
+
+        It once rebuilt them from the histogram, i.e. sorted, which made the
+        sequence tests reject every correct sampler at p ~ 0.
+        """
+        v = good_univariate_vector
+        uv = UnivariateSamples(v["params"]["mu"], v["params"]["sigma"], v["samples"])
+        ext = uv.run_extended_battery(mc_B=200)          # no samples= argument
+        for name in ("ljung_box", "runs_test", "block_homogeneity"):
+            assert ext[name]["passes"], (
+                f"Good vector {v['label']}: {name} rejects on the default "
+                f"path (p={ext[name]['pvalue']:.6f}) -- samples were "
+                f"probably reordered")
+        assert ext["all_pass"]
+        assert uv.is_valid_extended
+
     def test_to_json_after_battery(self, good_univariate_vector):
         """to_dict()/to_json() must survive the battery's numpy scalars."""
         v = good_univariate_vector

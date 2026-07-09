@@ -141,6 +141,11 @@ class UnivariateSamples:
                 "over Z), but received non-integer values. For continuous "
                 "multivariate data, MultivariateSamples skips the "
                 "per-coordinate discrete channel automatically.")
+        # Keep the samples in their original order (by reference -- do not
+        # mutate them afterwards). The sequence tests of the extended battery
+        # (Ljung-Box, runs, block homogeneity) measure ordering, so they cannot
+        # be run on a histogram-reconstructed sample list, which is sorted.
+        self.samples = list_samples
         self.histogram = dict()
         self.outlier = 0
         # Initialize histogram
@@ -171,11 +176,17 @@ class UnivariateSamples:
 
 
     def run_extended_battery(self, samples=None, mc_B=1000):
-        """Run the extended test battery (Phase 3 tests)."""
+        """
+        Run the extended test battery (Phase 3+4 tests).
+
+        `samples` defaults to the ordered samples this object was built from.
+        It must never be reconstructed from the histogram: that yields a sorted
+        sequence, and the sequence tests (Ljung-Box, runs, block homogeneity)
+        would then reject any correct sampler with p ~ 0.
+        """
         from univariate_tests import run_extended_battery
         if samples is None:
-            samples = [z for z in self.histogram
-                       for _ in range(self.histogram[z])]
+            samples = self.samples
         self._extended = run_extended_battery(
             self.exp_mu, self.exp_sigma, samples,
             tau=self.tau, alpha=self.pmin, mc_B=mc_B,
