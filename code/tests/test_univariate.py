@@ -1,4 +1,5 @@
 """Test SAGA univariate analysis against generated test vectors."""
+import json
 import sys
 import os
 
@@ -48,6 +49,17 @@ class TestGoodVectors:
             + ", ".join(k for k, r in ext.items()
                         if isinstance(r, dict) and not r.get("passes", True))
         )
+
+    def test_to_json_after_battery(self, good_univariate_vector):
+        """to_dict()/to_json() must survive the battery's numpy scalars."""
+        v = good_univariate_vector
+        uv = UnivariateSamples(v["params"]["mu"], v["params"]["sigma"], v["samples"])
+        uv.run_extended_battery(samples=v["samples"], mc_B=100)
+        # to_dict() must be plain Python, to_json() must not raise
+        parsed = json.loads(uv.to_json())
+        assert parsed["test"] == "univariate"
+        assert parsed["extended_tests"]["all_pass"] is True
+        json.dumps(uv.to_dict())  # a user dumping to_dict() directly also works
 
 
 class TestBadVectors:

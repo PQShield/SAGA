@@ -1,4 +1,5 @@
 """Test SAGA multivariate analysis against generated test vectors."""
+import json
 import sys
 import os
 
@@ -49,6 +50,16 @@ class TestGoodMultivariate:
             + ", ".join(k for k, r in ext.items()
                         if isinstance(r, dict) and not r.get("passes", True))
         )
+
+    def test_to_json_after_battery(self, good_multivariate_vector):
+        """to_dict()/to_json() must survive the battery's numpy scalars."""
+        v = good_multivariate_vector
+        mv = MultivariateSamples(v["params"]["sigma"], v["samples"])
+        mv.run_multivariate_battery()
+        parsed = json.loads(mv.to_json())
+        assert parsed["test"] == "multivariate"
+        assert parsed["extended_tests"]["all_pass"] is True
+        json.dumps(mv.to_dict())  # a user dumping to_dict() directly also works
 
     def test_per_coordinate_channel(self, good_multivariate_vector):
         """Integer (discrete-Gaussian) good vectors must light up the
