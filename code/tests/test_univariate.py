@@ -2,9 +2,25 @@
 import sys
 import os
 
+import pytest
+
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from saga import UnivariateSamples
+
+
+class TestIntegerEnforcement:
+    """UnivariateSamples is a discrete-Gaussian-over-Z test: integer input only."""
+
+    def test_rejects_continuous(self):
+        with pytest.raises(ValueError, match="integer"):
+            UnivariateSamples(0, 1.55, [0.1, -0.2, 1.7, 0.0, -1.3] * 200)
+
+    def test_accepts_integer_valued_floats(self):
+        # floats that are exactly integers are fine (e.g. from a DataFrame)
+        uv = UnivariateSamples(0, 1.55, [float(z) for z in
+                                         ([-1, 0, 1] * 400)])
+        assert uv.chi2_pvalue == uv.chi2_pvalue  # not nan
 
 
 class TestGoodVectors:

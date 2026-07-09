@@ -12,7 +12,7 @@ import sys
 import os
 import numpy as np
 
-sys.path.insert(0, os.path.dirname(__file__))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from saga import UnivariateSamples, make_gaussian_pdt
 from univariate_tests import (

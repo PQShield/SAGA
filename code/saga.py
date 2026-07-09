@@ -4,8 +4,10 @@ import json
 
 # Gaussian sampler
 from sampler import samplerz
-# Imports Falcon signature scheme
-from falcon import falcon
+# The reference Falcon implementation (github.com/tprest/falcon.py) is a git
+# submodule under falcon/, imported lazily inside test_sig() so the rest of
+# the suite has no dependency on it (or on its extra deps: pycryptodome,
+# beartype). Fetch it with: git submodule update --init.
 
 # Estimators for moments
 from scipy.stats import skew, kurtosis, moment
@@ -19,7 +21,7 @@ from numpy.linalg import matrix_rank, inv, eig, eigh
 import matplotlib.pyplot as plt
 
 # Math functions
-from math import ceil, sqrt, exp, log
+from math import ceil, sqrt, exp, log, pi
 # Data management
 from copy import deepcopy
 import re
@@ -107,6 +109,19 @@ class UnivariateSamples:
         self.exp_sigma = sigma
         # Number of samples
         self.nsamples = len(list_samples)
+        # UnivariateSamples tests a discrete Gaussian over Z: the input must
+        # be integer-valued. Continuous input would land every sample outside
+        # the integer histogram, silently degenerating to n_effective = 0 and
+        # a nan chi-square p-value. Reject it up front with a clear message.
+        _arr = array(list_samples)
+        if _arr.size == 0:
+            raise ValueError("UnivariateSamples: empty sample list.")
+        if not (abs(_arr - _arr.round()) < 1e-9).all():
+            raise ValueError(
+                "UnivariateSamples expects integer samples (discrete Gaussian "
+                "over Z), but received non-integer values. For continuous "
+                "multivariate data, MultivariateSamples skips the "
+                "per-coordinate discrete channel automatically.")
         self.histogram = dict()
         self.outlier = 0
         # Initialize histogram
@@ -194,7 +209,7 @@ class UnivariateSamples:
             tv += abs(p_emp - p_ideal)
             if p_ideal > 0:
                 chi2_unbucketed += (p_emp - p_ideal) ** 2 / p_ideal
-            tv_null += sqrt(2 * p_ideal / (3.14159265 * n_eff))
+            tv_null += sqrt(2 * p_ideal / (pi * n_eff))
 
         tv *= 0.5
         tv_null *= 0.5
@@ -267,6 +282,11 @@ class UnivariateSamples:
         obs.pop(-1)
         exp.pop(-1)
         n_effective = self.nsamples - self.outlier
+        if n_effective == 0:
+            raise ValueError(
+                "UnivariateSamples: every sample is an outlier (outside "
+                "[floor(mu) - tau*sigma, ceil(mu) + tau*sigma)). Check that "
+                "mu and sigma match the data.")
         exp = [round(prob * n_effective) for prob in exp]
         diff = sum(obs) - sum(exp)
         exp[len(exp) // 2] += diff
@@ -298,12 +318,25 @@ class MultivariateSamples:
         # Expected center and standard deviation
         self.exp_mu = 0
         self.exp_si = sigma
-        # Testing sphericity
-        # For each coordinate, perform an univariate analysis
-        self.univariates = [None] * self.dim
-        for i in range(self.dim):
-            self.univariates[i] = UnivariateSamples(0, sigma, self.data[i])
-        self.nb_gaussian_coord = sum((self.univariates[i].chi2_pvalue > pmin) for i in range(self.dim))
+        # Testing sphericity.
+        # The per-coordinate analysis uses UnivariateSamples, which tests a
+        # discrete Gaussian over Z and requires integer input (real Falcon
+        # signatures are integer-valued). For non-integer data -- e.g. a
+        # continuous multivariate Gaussian used to exercise the covariance
+        # machinery -- we skip the discrete per-coordinate channel rather than
+        # feed it non-integer data (which would degenerate to nan p-values).
+        _vals = array(self.data.values)
+        self.is_integer = bool((abs(_vals - _vals.round()) < 1e-9).all())
+        if self.is_integer:
+            self.univariates = [UnivariateSamples(0, sigma, self.data[i])
+                                for i in range(self.dim)]
+            self.nb_gaussian_coord = sum(
+                (self.univariates[i].chi2_pvalue > pmin)
+                for i in range(self.dim))
+        else:
+            # Per-coordinate discrete channel not applicable to non-integer data
+            self.univariates = None
+            self.nb_gaussian_coord = None
         # Estimate the (normalized) covariance matrix
         self.covariance = cov(self.data.transpose()) / (self.exp_si ** 2)
         self.DH, self.AS, self.PO, self.PA = doornik_hansen(self.data)
@@ -313,14 +346,18 @@ class MultivariateSamples:
     def run_multivariate_battery(self):
         """Run the extended multivariate test battery (Phase 5)."""
         from multivariate_tests import run_multivariate_battery
-        per_coord_pvals = [self.univariates[i].chi2_pvalue
-                           for i in range(self.dim)]
+        # None for non-integer data: the battery then drops the per-coordinate
+        # Fisher channel rather than aggregating nan p-values.
+        per_coord_pvals = ([self.univariates[i].chi2_pvalue
+                            for i in range(self.dim)]
+                           if self.univariates is not None else None)
         self._mv_extended = run_multivariate_battery(
             self.exp_si,
             self.data.values,
             self.covariance,
             self.nsamples,
             per_coord_pvals,
+            dc_pvalue=self.dc_pvalue,
         )
         return self._mv_extended
 
@@ -348,7 +385,10 @@ class MultivariateSamples:
         rep += "\n"
         rep += "3 - P-value of covariance diagonals test:          {p:.4f}\n".format(p=self.dc_pvalue)
         rep += "\n"
-        rep += "4 - Gaussian coordinates (w/ st. dev. = sigma)?    {k} out of {dim}\n".format(k=self.nb_gaussian_coord, dim=self.dim)
+        if self.nb_gaussian_coord is None:
+            rep += "4 - Gaussian coordinates (w/ st. dev. = sigma)?    n/a (non-integer data; discrete per-coordinate channel skipped)\n"
+        else:
+            rep += "4 - Gaussian coordinates (w/ st. dev. = sigma)?    {k} out of {dim}\n".format(k=self.nb_gaussian_coord, dim=self.dim)
         return rep
 
     def to_dict(self):
@@ -358,7 +398,11 @@ class MultivariateSamples:
             "doornik_hansen": {"stat": float(self.DH), "pvalue": float(self.PO)},
             "anderson_scedasticity": {"stat": float(self.AS), "pvalue": float(self.PA)},
             "diagcov_pvalue": float(self.dc_pvalue),
-            "gaussian_coords": {"passing": int(self.nb_gaussian_coord), "total": self.dim},
+            "gaussian_coords": {
+                "passing": (int(self.nb_gaussian_coord)
+                            if self.nb_gaussian_coord is not None else None),
+                "total": self.dim,
+                "applicable": self.is_integer},
             "extended_tests": self._mv_extended,
         }
 
@@ -724,53 +768,64 @@ def test_falcon():
     return
 
 
-def test_sig(n=128, nb_sig=1000, perturb=False, level=0):
+def test_sig(n=128, nb_sig=1000):
     """
-    Test signatures output by a Python implementation of Falcon.
-    This test allow to perturb the FFT by setting the rightmost node
-    of the FFT tree (of the private key) to 0. One can check that, at
-    least for moderate levels (0 to 4), the test will end up detecting
-    (via diagcov) that the signatures output do not follow the correct
-    distribution.
+    Test the multivariate distribution of signatures produced by the
+    reference Falcon implementation (github.com/tprest/falcon.py, vendored
+    as the falcon/ submodule).
+
+    We sample the raw Gaussian preimage vector (s0, s1) directly, before the
+    norm-rejection step. That rejection sits ~6.7 sigma out (rejection mass
+    ~1e-11), so it is statistically indistinguishable from the accepted
+    signature distribution at any feasible sample size -- sampling the
+    preimage is the clean way to study the sampler output (this replaces the
+    old reject=False path, which the reference API no longer exposes).
 
     Input:
     - n: the degree of the ring
     - nb_sig: number of signatures
-    - perturb: if set to 1, one node in the FFT tree is set to 0
-    - level: determines which node (the rightmost one at a given level)
-      is set to 0
     """
+    import os
+    import sys
+    from os import urandom
+    # The submodule uses flat imports (from common import ...), so its own
+    # directory -- not the SAGA code/ directory -- must be on sys.path.
+    _falcon_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                               "falcon")
+    if not os.path.isfile(os.path.join(_falcon_dir, "falcon.py")):
+        raise RuntimeError(
+            "falcon/ submodule not found. Fetch it with:\n"
+            "    git submodule update --init\n"
+            "and install its extra deps: pip install pycryptodome beartype")
+    if _falcon_dir not in sys.path:
+        sys.path.insert(0, _falcon_dir)
+    import falcon as falcon_ref
+
     start = time.time()
-    # Generate a private key
-    sk = falcon.SecretKey(n)
-    # Perturb the FFT tree
-    if perturb is True:
-        # Check that the level is less than the FFT tree depth
-        assert(1 << level) < n
-        u, k = sk.T_fft, n
-        # Find the node
-        for _ in range(level):
-            u = u[2]
-            k >>= 1
-        # Zero-ize the node
-        u[0] = [0] * k
+    fal = falcon_ref.Falcon(n)
+    sk, _vk = fal.keygen()
+    B0_fft, T_fft = sk[4], sk[5]
     end = time.time()
     print("Took {t:.2f} seconds to generate the private key.".format(t=end - start))
 
-    # Compute signatures
-    message = "0"
+    # Sample the raw Gaussian preimage (s0, s1) for each of nb_sig messages,
+    # concatenating the two halves into one 2n-dimensional sample.
+    message = b"0"
     start = time.time()
-    list_signatures = [sk.sign(message, reject=False) for _ in range(nb_sig)]
-    # Strip away the nonces and concatenate the s_1's and s_2's
-    list_signatures = [sig[1][0] + sig[1][1] for sig in list_signatures]
+    list_signatures = []
+    for _ in range(nb_sig):
+        salt = urandom(falcon_ref.SALT_LEN)
+        hashed = fal.__hash_to_point__(message, salt)
+        s = fal.__sample_preimage__(B0_fft, T_fft, hashed)
+        list_signatures.append(list(s[0]) + list(s[1]))
     end = time.time()
     print("Took {t:.2f} seconds to generate the samples.".format(t=end - start))
     # Perform the statistical test
     start = time.time()
-    samples_data = MultivariateSamples(sk.sigma, list_signatures)
+    samples_data = MultivariateSamples(fal.param.sigma, list_signatures)
     end = time.time()
     print("Took {t:.2f} seconds to run a statistical test.".format(t=end - start))
-    return sk, samples_data
+    return fal, samples_data
 
 
 

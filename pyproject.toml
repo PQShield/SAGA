@@ -22,6 +22,10 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=7.0", "mpmath>=1.3"]
+# Extra deps of the reference Falcon submodule, needed only by test_sig()
+# (end-to-end test on real Falcon signatures). Fetch the code with
+# `git submodule update --init`.
+falcon = ["pycryptodome", "beartype"]
 
 [tool.setuptools]
 py-modules = []

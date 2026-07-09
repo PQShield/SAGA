@@ -161,11 +161,6 @@ def sample_drift(rng, support, probs, n, mu, sigma, drift_rate, tau=14):
 # Multivariate vectors
 # ---------------------------------------------------------------------------
 
-def multivariate_perfect(rng, dim, sigma, n):
-    """iid N(0, sigma^2) per coordinate."""
-    return rng.normal(0, sigma, size=(n, dim)).tolist()
-
-
 def multivariate_inflated_correlation(rng, dim, sigma, n, rho_pair, pair):
     """
     Perfect marginals, but coordinates pair[0] and pair[1] have
@@ -200,6 +195,52 @@ def multivariate_fft_tree_zeroed(rng, dim, sigma, n, zero_freq):
         sig2 = rng.normal(0, sigma, size=half)
         data.append(np.concatenate([sig, sig2]).tolist())
     return data
+
+
+def multivariate_discrete_gaussian(rng, dim, sigma, n,
+                                   wrong_coord=None, wrong_factor=1.0):
+    """
+    iid *discrete* Gaussian over Z per coordinate -- integer-valued, like real
+    Falcon signatures (and unlike the continuous vectors above, which model
+    only the covariance structure). This exercises MultivariateSamples's
+    per-coordinate discrete channel (nb_gaussian_coord), which is skipped for
+    non-integer data.
+
+    Note: sampling the discrete Gaussian directly is required -- rounding a
+    continuous N(0, sigma) draw inflates the per-coordinate variance by ~1/12
+    and makes the squared-norm test false-alarm.
+
+    If wrong_coord is set, that one coordinate is sampled at sigma*wrong_factor
+    so the per-coordinate channel has a coordinate-level flaw to catch.
+    """
+    span = int(np.ceil(14 * sigma * max(1.0, wrong_factor)))
+    zs = np.arange(-span, span + 1)
+
+    def column(s):
+        p = np.exp(-(zs ** 2) / (2 * s ** 2))
+        p /= p.sum()
+        return rng.choice(zs, size=n, p=p)
+
+    data = np.empty((n, dim), dtype=int)
+    for j in range(dim):
+        s = sigma * wrong_factor if (wrong_coord is not None
+                                     and j == wrong_coord) else sigma
+        data[:, j] = column(s)
+    return data.tolist()
+
+
+def _as_int(samples):
+    """Round a constructed continuous sample matrix to integers.
+
+    Real Falcon signatures are integer vectors, so every multivariate vector
+    is discretized. For *flawed* (bad/mediocre) vectors, rounding is faithful:
+    the structural flaw (correlation, zeroed frequency, inflated norm)
+    survives, and the ~1/12 quantization variance is negligible next to it.
+    For a *good* vector rounding is NOT used -- it would inflate the
+    per-coordinate variance and false-alarm the squared-norm test; good
+    vectors are sampled directly as discrete Gaussians instead.
+    """
+    return np.round(np.asarray(samples)).astype(int).tolist()
 
 
 # ---------------------------------------------------------------------------
@@ -445,16 +486,20 @@ def build_multivariate_vectors(n, seed):
     dim = 128  # Falcon-64 signature dimension
     sigma = 1.55
 
-    # Good: iid Gaussian
+    # Good: iid discrete Gaussian over Z (integer-valued, like real Falcon
+    # signatures). Sampled directly (not rounded) so the per-coordinate
+    # variance is exact -- exercises the full battery including the
+    # per-coordinate discrete channel (nb_gaussian_coord should be dim/dim).
     rng = np.random.default_rng(seed + 100)
     vectors.append({
         "label": "mv_good_iid",
         "tier": "good",
-        "description": f"iid N(0, {sigma}^2), dim={dim}",
+        "description": f"iid discrete Gaussian over Z, sigma={sigma}, dim={dim}",
         "params": {"sigma": sigma, "dim": dim, "n": n},
         "flaw": {"type": "none"},
-        "samples": multivariate_perfect(rng, dim, sigma, n)
+        "samples": multivariate_discrete_gaussian(rng, dim, sigma, n)
     })
+
 
     # Bad: one pair of coordinates correlated (rho=0.5)
     rng = np.random.default_rng(seed + 101)
@@ -464,18 +509,24 @@ def build_multivariate_vectors(n, seed):
         "description": f"Coords 0,1 correlated (rho=0.5), dim={dim}",
         "params": {"sigma": sigma, "dim": dim, "n": n},
         "flaw": {"type": "correlated_pair", "pair": [0, 1], "rho": 0.5},
-        "samples": multivariate_inflated_correlation(rng, dim, sigma, n, 0.5, (0, 1))
+        "samples": _as_int(multivariate_inflated_correlation(rng, dim, sigma, n, 0.5, (0, 1)))
     })
 
-    # Bad: one coordinate has wrong variance
+    # Bad: one coordinate has wrong variance. This is a coordinate-level flaw
+    # with unchanged covariance structure, so DH/diagcov/max_offdiag/HZ all
+    # miss it -- only the per-coordinate discrete channel catches it. It must
+    # therefore be integer-valued (real Falcon signatures are), so the channel
+    # is active. (A continuous version is undetectable by the whole battery,
+    # and previously "passed" only because of a nan degeneracy now fixed.)
     rng = np.random.default_rng(seed + 102)
     vectors.append({
         "label": "mv_bad_variance_one_coord",
         "tier": "bad",
-        "description": f"Coord 7 has 1.3x variance, dim={dim}",
+        "description": f"Discrete Gaussian, coord 7 at 1.3x sigma, dim={dim}",
         "params": {"sigma": sigma, "dim": dim, "n": n},
         "flaw": {"type": "wrong_variance", "coord": 7, "factor": 1.3},
-        "samples": multivariate_wrong_variance_one_coord(rng, dim, sigma, n, 7, 1.3)
+        "samples": multivariate_discrete_gaussian(rng, dim, sigma, n,
+                                                  wrong_coord=7, wrong_factor=1.3)
     })
 
     # Bad: FFT-tree zeroed frequency
@@ -486,7 +537,7 @@ def build_multivariate_vectors(n, seed):
         "description": f"FFT freq 3 zeroed (simulates tree bug), dim={dim}",
         "params": {"sigma": sigma, "dim": dim, "n": n},
         "flaw": {"type": "fft_zeroed", "freq": 3},
-        "samples": multivariate_fft_tree_zeroed(rng, dim, sigma, n, 3)
+        "samples": _as_int(multivariate_fft_tree_zeroed(rng, dim, sigma, n, 3))
     })
 
     # Bad: inflated norm (all coordinates positively correlated)
@@ -500,7 +551,7 @@ def build_multivariate_vectors(n, seed):
         "description": f"All coords share a common factor (norm inflated), dim={dim}",
         "params": {"sigma": sigma, "dim": dim, "n": n},
         "flaw": {"type": "norm_inflation", "shared_sigma_fraction": 0.3},
-        "samples": data_norm.tolist()
+        "samples": _as_int(data_norm)
     })
 
     # Bad: two different distributions (simulates key-dependent output)
@@ -513,9 +564,9 @@ def build_multivariate_vectors(n, seed):
         "description": f"Mixed: half from sigma, half from sigma*1.05, dim={dim}",
         "params": {"sigma": sigma, "dim": dim, "n": n},
         "flaw": {"type": "cross_key", "sigma_ratio": 1.05},
-        "samples": np.vstack([data_key1, data_key2]).tolist(),
-        "samples_key1": data_key1.tolist(),
-        "samples_key2": data_key2.tolist(),
+        "samples": _as_int(np.vstack([data_key1, data_key2])),
+        "samples_key1": _as_int(data_key1),
+        "samples_key2": _as_int(data_key2),
     })
 
     # Mediocre: weak single-pair correlation (rho=0.1)
@@ -526,7 +577,7 @@ def build_multivariate_vectors(n, seed):
         "description": f"Coords 0,1 weakly correlated (rho=0.1), dim={dim}",
         "params": {"sigma": sigma, "dim": dim, "n": n},
         "flaw": {"type": "correlated_pair", "pair": [0, 1], "rho": 0.1},
-        "samples": multivariate_inflated_correlation(rng, dim, sigma, n, 0.1, (0, 1))
+        "samples": _as_int(multivariate_inflated_correlation(rng, dim, sigma, n, 0.1, (0, 1)))
     })
 
     # Mediocre: FFT frequency with reduced (not zeroed) variance
@@ -545,7 +596,7 @@ def build_multivariate_vectors(n, seed):
         "description": f"FFT freq 5 at 70% variance, dim={dim}",
         "params": {"sigma": sigma, "dim": dim, "n": n},
         "flaw": {"type": "fft_weak", "freq": 5, "factor": 0.7},
-        "samples": data_fft_weak,
+        "samples": _as_int(data_fft_weak),
     })
 
     return vectors

@@ -408,7 +408,7 @@ def henze_zirkler_test(sigma, data, alpha=0.001, mc_B=100):
 # ---------------------------------------------------------------------------
 
 def run_multivariate_battery(sigma, data, cov_normalized, nsamples,
-                             per_coord_pvalues, alpha=0.001):
+                             per_coord_pvalues, alpha=0.001, dc_pvalue=None):
     """
     Run all extended multivariate tests.
 
@@ -417,8 +417,14 @@ def run_multivariate_battery(sigma, data, cov_normalized, nsamples,
         data: n x dim array of samples
         cov_normalized: dim x dim normalized covariance (already computed)
         nsamples: number of samples
-        per_coord_pvalues: list of chi-square p-values per coordinate
+        per_coord_pvalues: list of chi-square p-values per coordinate, or
+            None for non-integer data (the per-coordinate discrete channel
+            is then dropped from the verdict rather than fed nan p-values)
         alpha: significance threshold
+        dc_pvalue: the diagcov p-value (from MultivariateSamples), folded
+            into the family verdict so a single correlated pair -- which
+            diagcov catches but the other components can miss -- is not
+            silently passed
 
     Returns dict with results from each test and overall verdict.
     """
@@ -426,23 +432,35 @@ def run_multivariate_battery(sigma, data, cov_normalized, nsamples,
     results = {}
 
     results["squared_norm"] = squared_norm_test(sigma, data, alpha=alpha)
-    results["fisher_bh"] = fisher_bh_meta(per_coord_pvalues, alpha=alpha)
     results["max_offdiag"] = max_offdiag_correlation(
         np.asarray(cov_normalized), nsamples, alpha=alpha)
     results["fft_domain"] = fft_domain_battery(sigma, data, alpha=alpha)
     results["henze_zirkler"] = henze_zirkler_test(sigma, data, alpha=alpha)
 
     # Single family verdict via Fisher's method, plus a Bonferroni gate so
-    # a lone strong flaw is never masked -- rather than AND-ing 5 tests each
-    # at alpha (which inflates the family false-alarm rate). Individual
+    # a lone strong flaw is never masked -- rather than AND-ing the tests
+    # each at alpha (which inflates the family false-alarm rate). Individual
     # results are reported above (report-first).
     component_pvalues = {
         "squared_norm": results["squared_norm"]["pvalue"],
-        "fisher_bh": results["fisher_bh"]["fisher_pvalue"],
         "max_offdiag": results["max_offdiag"]["pvalue"],
         "fft_domain": results["fft_domain"]["fisher_pvalue"],
         "henze_zirkler": results["henze_zirkler"]["pvalue"],
     }
+    # diagcov: folded into the verdict (it catches correlated pairs the other
+    # components can dilute). Computed by MultivariateSamples, passed in here.
+    if dc_pvalue is not None:
+        component_pvalues["diagcov"] = float(dc_pvalue)
+    # Per-coordinate discrete Gaussianity channel: only for integer data.
+    # A single flawed coordinate dilutes in the Fisher-combined p-value, so we
+    # keep the BH-localization signal separate: bh_rejected_count > 0 fails the
+    # verdict even when the global Fisher p is not significant (plan item 5.2:
+    # Fisher for "is the sampler OK", BH for "which coordinate").
+    bh_localized_flaw = False
+    if per_coord_pvalues is not None:
+        results["fisher_bh"] = fisher_bh_meta(per_coord_pvalues, alpha=alpha)
+        component_pvalues["fisher_bh"] = results["fisher_bh"]["fisher_pvalue"]
+        bh_localized_flaw = results["fisher_bh"]["bh_rejected_count"] > 0
     pvals = np.clip(np.array(list(component_pvalues.values()), dtype=float),
                     1e-300, 1.0)
     fisher_stat = float(-2 * np.sum(np.log(pvals)))
@@ -455,7 +473,9 @@ def run_multivariate_battery(sigma, data, cov_normalized, nsamples,
     results["global_pvalue"] = global_pvalue
     results["bonferroni_rejects"] = [
         name for name, p in component_pvalues.items() if p <= alpha / k]
+    results["bh_localized_flaw"] = bh_localized_flaw
     results["all_pass"] = (global_pvalue > alpha
-                           and not results["bonferroni_rejects"])
+                           and not results["bonferroni_rejects"]
+                           and not bh_localized_flaw)
 
     return results
