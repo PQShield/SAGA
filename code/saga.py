@@ -16,7 +16,7 @@ from scipy.stats import chisquare
 # Distributions
 from scipy.stats import chi2, norm
 # Numpy stuff
-from numpy import cov, set_printoptions, diag, array, mean
+from numpy import cov, set_printoptions, diag, array, mean, ndarray, generic
 from numpy.linalg import matrix_rank, inv, eig, eigh
 import matplotlib.pyplot as plt
 
@@ -60,6 +60,25 @@ chi2_bucket = 10
 pmin = 0.001
 # Print options
 set_printoptions(precision=4)
+
+
+def _jsonable(obj):
+    """
+    Recursively convert numpy scalars and arrays to plain Python types.
+
+    The test batteries return numpy scalars (np.bool_ for `passes`, np.float64
+    for statistics), which json.dumps refuses. Applying this to the output of
+    to_dict() keeps both to_dict() and to_json() usable for batch analysis.
+    """
+    if isinstance(obj, dict):
+        return {key: _jsonable(value) for key, value in obj.items()}
+    if isinstance(obj, (list, tuple)):
+        return [_jsonable(value) for value in obj]
+    if isinstance(obj, ndarray):
+        return _jsonable(obj.tolist())
+    if isinstance(obj, generic):        # any numpy scalar (bool_, int64, ...)
+        return obj.item()
+    return obj
 
 
 def gaussian(x, mu, sigma):
@@ -235,7 +254,7 @@ class UnivariateSamples:
 
     def to_dict(self):
         es = self.effect_sizes()
-        return {
+        return _jsonable({
             "test": "univariate",
             "params": {
                 "mu": self.exp_mu, "sigma": self.exp_sigma,
@@ -260,7 +279,7 @@ class UnivariateSamples:
             "effect_sizes": es,
             "extended_tests": self._extended,
             "is_valid_extended": getattr(self, 'is_valid_extended', None),
-        }
+        })
 
     def to_json(self):
         return json.dumps(self.to_dict(), indent=2)
@@ -403,7 +422,7 @@ class MultivariateSamples:
         return rep
 
     def to_dict(self):
-        return {
+        return _jsonable({
             "test": "multivariate",
             "params": {"sigma": self.exp_si, "dim": self.dim, "n": self.nsamples},
             "doornik_hansen": {"stat": float(self.DH), "pvalue": float(self.PO)},
@@ -415,7 +434,7 @@ class MultivariateSamples:
                 "total": self.dim,
                 "applicable": self.is_integer},
             "extended_tests": self._mv_extended,
-        }
+        })
 
     def to_json(self):
         return json.dumps(self.to_dict(), indent=2)
