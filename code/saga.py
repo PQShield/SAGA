@@ -4,8 +4,10 @@ import json
 
 # Gaussian sampler
 from sampler import samplerz
-# Imports Falcon signature scheme
-from falcon import falcon
+# The reference Falcon implementation (github.com/tprest/falcon.py) is a git
+# submodule under falcon/, imported lazily inside test_sig() so the rest of
+# the suite has no dependency on it (or on its extra deps: pycryptodome,
+# beartype). Fetch it with: git submodule update --init.
 
 # Estimators for moments
 from scipy.stats import skew, kurtosis, moment
@@ -766,53 +768,64 @@ def test_falcon():
     return
 
 
-def test_sig(n=128, nb_sig=1000, perturb=False, level=0):
+def test_sig(n=128, nb_sig=1000):
     """
-    Test signatures output by a Python implementation of Falcon.
-    This test allow to perturb the FFT by setting the rightmost node
-    of the FFT tree (of the private key) to 0. One can check that, at
-    least for moderate levels (0 to 4), the test will end up detecting
-    (via diagcov) that the signatures output do not follow the correct
-    distribution.
+    Test the multivariate distribution of signatures produced by the
+    reference Falcon implementation (github.com/tprest/falcon.py, vendored
+    as the falcon/ submodule).
+
+    We sample the raw Gaussian preimage vector (s0, s1) directly, before the
+    norm-rejection step. That rejection sits ~6.7 sigma out (rejection mass
+    ~1e-11), so it is statistically indistinguishable from the accepted
+    signature distribution at any feasible sample size -- sampling the
+    preimage is the clean way to study the sampler output (this replaces the
+    old reject=False path, which the reference API no longer exposes).
 
     Input:
     - n: the degree of the ring
     - nb_sig: number of signatures
-    - perturb: if set to 1, one node in the FFT tree is set to 0
-    - level: determines which node (the rightmost one at a given level)
-      is set to 0
     """
+    import os
+    import sys
+    from os import urandom
+    # The submodule uses flat imports (from common import ...), so its own
+    # directory -- not the SAGA code/ directory -- must be on sys.path.
+    _falcon_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                               "falcon")
+    if not os.path.isfile(os.path.join(_falcon_dir, "falcon.py")):
+        raise RuntimeError(
+            "falcon/ submodule not found. Fetch it with:\n"
+            "    git submodule update --init\n"
+            "and install its extra deps: pip install pycryptodome beartype")
+    if _falcon_dir not in sys.path:
+        sys.path.insert(0, _falcon_dir)
+    import falcon as falcon_ref
+
     start = time.time()
-    # Generate a private key
-    sk = falcon.SecretKey(n)
-    # Perturb the FFT tree
-    if perturb is True:
-        # Check that the level is less than the FFT tree depth
-        assert(1 << level) < n
-        u, k = sk.T_fft, n
-        # Find the node
-        for _ in range(level):
-            u = u[2]
-            k >>= 1
-        # Zero-ize the node
-        u[0] = [0] * k
+    fal = falcon_ref.Falcon(n)
+    sk, _vk = fal.keygen()
+    B0_fft, T_fft = sk[4], sk[5]
     end = time.time()
     print("Took {t:.2f} seconds to generate the private key.".format(t=end - start))
 
-    # Compute signatures
-    message = "0"
+    # Sample the raw Gaussian preimage (s0, s1) for each of nb_sig messages,
+    # concatenating the two halves into one 2n-dimensional sample.
+    message = b"0"
     start = time.time()
-    list_signatures = [sk.sign(message, reject=False) for _ in range(nb_sig)]
-    # Strip away the nonces and concatenate the s_1's and s_2's
-    list_signatures = [sig[1][0] + sig[1][1] for sig in list_signatures]
+    list_signatures = []
+    for _ in range(nb_sig):
+        salt = urandom(falcon_ref.SALT_LEN)
+        hashed = fal.__hash_to_point__(message, salt)
+        s = fal.__sample_preimage__(B0_fft, T_fft, hashed)
+        list_signatures.append(list(s[0]) + list(s[1]))
     end = time.time()
     print("Took {t:.2f} seconds to generate the samples.".format(t=end - start))
     # Perform the statistical test
     start = time.time()
-    samples_data = MultivariateSamples(sk.sigma, list_signatures)
+    samples_data = MultivariateSamples(fal.param.sigma, list_signatures)
     end = time.time()
     print("Took {t:.2f} seconds to run a statistical test.".format(t=end - start))
-    return sk, samples_data
+    return fal, samples_data
 
 
 

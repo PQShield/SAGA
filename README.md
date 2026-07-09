@@ -31,7 +31,14 @@ pytest code/tests/ -v
 
 ## How to use
 
-Along with the main file to run these statistical tests, `saga.py`, we also provide code for our proposed sampler [1] in the files `sampler.c`, `sampler.py`, where `sampler_rep.py` is a file we use to get data on the repetition rate. We also provide [falcon/](code/falcon) and [testdata/](code/testdata) for python implementations of [Falcon](https://falcon-sign.info/) and its output values.
+Along with the main file to run these statistical tests, `saga.py`, we also provide code for our proposed sampler [1] in the files `sampler.c`, `sampler.py`. Test data is generated on demand by `generate_test_vectors.py` (the original ~530MB HPRR20 reference samples are preserved in the `pqcrypto2020-as-published` tag). Auxiliary scripts (baseline runner, calibration, figures, terminal report card) live under [scripts/](code/scripts).
+
+The optional end-to-end test `test_sig()` runs against the reference Falcon implementation ([github.com/tprest/falcon.py](https://github.com/tprest/falcon.py)), vendored as the `code/falcon` git submodule. The core suite does not depend on it; fetch it only if you want to run `test_sig()`:
+
+```
+git submodule update --init
+pip install ".[falcon]"
+```
 
 #### Example for univariate samples
 
