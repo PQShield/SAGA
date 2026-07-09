@@ -19,7 +19,7 @@ from numpy.linalg import matrix_rank, inv, eig, eigh
 import matplotlib.pyplot as plt
 
 # Math functions
-from math import ceil, sqrt, exp, log
+from math import ceil, sqrt, exp, log, pi
 # Data management
 from copy import deepcopy
 import re
@@ -107,6 +107,19 @@ class UnivariateSamples:
         self.exp_sigma = sigma
         # Number of samples
         self.nsamples = len(list_samples)
+        # UnivariateSamples tests a discrete Gaussian over Z: the input must
+        # be integer-valued. Continuous input would land every sample outside
+        # the integer histogram, silently degenerating to n_effective = 0 and
+        # a nan chi-square p-value. Reject it up front with a clear message.
+        _arr = array(list_samples)
+        if _arr.size == 0:
+            raise ValueError("UnivariateSamples: empty sample list.")
+        if not (abs(_arr - _arr.round()) < 1e-9).all():
+            raise ValueError(
+                "UnivariateSamples expects integer samples (discrete Gaussian "
+                "over Z), but received non-integer values. For continuous "
+                "multivariate data, MultivariateSamples skips the "
+                "per-coordinate discrete channel automatically.")
         self.histogram = dict()
         self.outlier = 0
         # Initialize histogram
@@ -194,7 +207,7 @@ class UnivariateSamples:
             tv += abs(p_emp - p_ideal)
             if p_ideal > 0:
                 chi2_unbucketed += (p_emp - p_ideal) ** 2 / p_ideal
-            tv_null += sqrt(2 * p_ideal / (3.14159265 * n_eff))
+            tv_null += sqrt(2 * p_ideal / (pi * n_eff))
 
         tv *= 0.5
         tv_null *= 0.5
@@ -267,6 +280,11 @@ class UnivariateSamples:
         obs.pop(-1)
         exp.pop(-1)
         n_effective = self.nsamples - self.outlier
+        if n_effective == 0:
+            raise ValueError(
+                "UnivariateSamples: every sample is an outlier (outside "
+                "[floor(mu) - tau*sigma, ceil(mu) + tau*sigma)). Check that "
+                "mu and sigma match the data.")
         exp = [round(prob * n_effective) for prob in exp]
         diff = sum(obs) - sum(exp)
         exp[len(exp) // 2] += diff
@@ -298,12 +316,25 @@ class MultivariateSamples:
         # Expected center and standard deviation
         self.exp_mu = 0
         self.exp_si = sigma
-        # Testing sphericity
-        # For each coordinate, perform an univariate analysis
-        self.univariates = [None] * self.dim
-        for i in range(self.dim):
-            self.univariates[i] = UnivariateSamples(0, sigma, self.data[i])
-        self.nb_gaussian_coord = sum((self.univariates[i].chi2_pvalue > pmin) for i in range(self.dim))
+        # Testing sphericity.
+        # The per-coordinate analysis uses UnivariateSamples, which tests a
+        # discrete Gaussian over Z and requires integer input (real Falcon
+        # signatures are integer-valued). For non-integer data -- e.g. a
+        # continuous multivariate Gaussian used to exercise the covariance
+        # machinery -- we skip the discrete per-coordinate channel rather than
+        # feed it non-integer data (which would degenerate to nan p-values).
+        _vals = array(self.data.values)
+        self.is_integer = bool((abs(_vals - _vals.round()) < 1e-9).all())
+        if self.is_integer:
+            self.univariates = [UnivariateSamples(0, sigma, self.data[i])
+                                for i in range(self.dim)]
+            self.nb_gaussian_coord = sum(
+                (self.univariates[i].chi2_pvalue > pmin)
+                for i in range(self.dim))
+        else:
+            # Per-coordinate discrete channel not applicable to non-integer data
+            self.univariates = None
+            self.nb_gaussian_coord = None
         # Estimate the (normalized) covariance matrix
         self.covariance = cov(self.data.transpose()) / (self.exp_si ** 2)
         self.DH, self.AS, self.PO, self.PA = doornik_hansen(self.data)
@@ -313,14 +344,18 @@ class MultivariateSamples:
     def run_multivariate_battery(self):
         """Run the extended multivariate test battery (Phase 5)."""
         from multivariate_tests import run_multivariate_battery
-        per_coord_pvals = [self.univariates[i].chi2_pvalue
-                           for i in range(self.dim)]
+        # None for non-integer data: the battery then drops the per-coordinate
+        # Fisher channel rather than aggregating nan p-values.
+        per_coord_pvals = ([self.univariates[i].chi2_pvalue
+                            for i in range(self.dim)]
+                           if self.univariates is not None else None)
         self._mv_extended = run_multivariate_battery(
             self.exp_si,
             self.data.values,
             self.covariance,
             self.nsamples,
             per_coord_pvals,
+            dc_pvalue=self.dc_pvalue,
         )
         return self._mv_extended
 
@@ -348,7 +383,10 @@ class MultivariateSamples:
         rep += "\n"
         rep += "3 - P-value of covariance diagonals test:          {p:.4f}\n".format(p=self.dc_pvalue)
         rep += "\n"
-        rep += "4 - Gaussian coordinates (w/ st. dev. = sigma)?    {k} out of {dim}\n".format(k=self.nb_gaussian_coord, dim=self.dim)
+        if self.nb_gaussian_coord is None:
+            rep += "4 - Gaussian coordinates (w/ st. dev. = sigma)?    n/a (non-integer data; discrete per-coordinate channel skipped)\n"
+        else:
+            rep += "4 - Gaussian coordinates (w/ st. dev. = sigma)?    {k} out of {dim}\n".format(k=self.nb_gaussian_coord, dim=self.dim)
         return rep
 
     def to_dict(self):
@@ -358,7 +396,11 @@ class MultivariateSamples:
             "doornik_hansen": {"stat": float(self.DH), "pvalue": float(self.PO)},
             "anderson_scedasticity": {"stat": float(self.AS), "pvalue": float(self.PA)},
             "diagcov_pvalue": float(self.dc_pvalue),
-            "gaussian_coords": {"passing": int(self.nb_gaussian_coord), "total": self.dim},
+            "gaussian_coords": {
+                "passing": (int(self.nb_gaussian_coord)
+                            if self.nb_gaussian_coord is not None else None),
+                "total": self.dim,
+                "applicable": self.is_integer},
             "extended_tests": self._mv_extended,
         }
 
