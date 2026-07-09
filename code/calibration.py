@@ -15,7 +15,12 @@ import json
 import numpy as np
 from scipy.stats import kstest
 
-from saga import UnivariateSamples, make_gaussian_pdt
+from saga import UnivariateSamples
+from distributions import pdt_arrays
+from flaws import (
+    gen_sigma_shift, gen_mu_shift, gen_sign_coupling, gen_tail_truncation,
+    gen_table_error, gen_contamination, gen_markov,
+)
 from univariate_tests import (
     tail_exceedance, sign_halfgaussian, discrete_anderson_darling,
     higher_criticism, ljung_box, runs_test, block_homogeneity,
@@ -23,80 +28,7 @@ from univariate_tests import (
 
 
 # ---------------------------------------------------------------------------
-# Flaw generators (distribution-level, cheap at large N)
-# ---------------------------------------------------------------------------
-
-def _pdt_arrays(mu, sigma, tau=14):
-    pdt = make_gaussian_pdt(mu, sigma)
-    support = np.array(sorted(pdt.keys()))
-    probs = np.array([pdt[z] for z in support])
-    return support, probs
-
-
-def gen_perfect(rng, mu, sigma, n):
-    s, p = _pdt_arrays(mu, sigma)
-    return rng.choice(s, size=n, p=p).tolist()
-
-
-def gen_sigma_shift(rng, mu, sigma, n, epsilon):
-    s, p = _pdt_arrays(mu, sigma * (1 + epsilon))
-    return rng.choice(s, size=n, p=p).tolist()
-
-
-def gen_mu_shift(rng, mu, sigma, n, delta):
-    s, p = _pdt_arrays(mu + delta, sigma)
-    return rng.choice(s, size=n, p=p).tolist()
-
-
-def gen_sign_coupling(rng, mu, sigma, n, bias):
-    s, p = _pdt_arrays(mu, sigma)
-    p_biased = p.copy()
-    for i, z in enumerate(s):
-        if z > mu:
-            p_biased[i] *= bias / 0.5
-        elif z < mu:
-            p_biased[i] *= (1 - bias) / 0.5
-    p_biased /= p_biased.sum()
-    return rng.choice(s, size=n, p=p_biased).tolist()
-
-
-def gen_tail_truncation(rng, mu, sigma, n, k_sigma):
-    s, p = _pdt_arrays(mu, sigma)
-    mask = np.abs(s - mu) <= k_sigma * sigma
-    p_trunc = p * mask
-    p_trunc /= p_trunc.sum()
-    return rng.choice(s, size=n, p=p_trunc).tolist()
-
-
-def gen_table_error(rng, mu, sigma, n, factor):
-    s, p = _pdt_arrays(mu, sigma)
-    mode_idx = np.argmax(p)
-    p_err = p.copy()
-    p_err[mode_idx + 2] *= factor
-    p_err /= p_err.sum()
-    return rng.choice(s, size=n, p=p_err).tolist()
-
-
-def gen_contamination(rng, mu, sigma, n, epsilon):
-    s, p = _pdt_arrays(mu, sigma)
-    p_cont = (1 - epsilon) * p + epsilon / len(p)
-    p_cont /= p_cont.sum()
-    return rng.choice(s, size=n, p=p_cont).tolist()
-
-
-def gen_markov(rng, mu, sigma, n, rho):
-    s, p = _pdt_arrays(mu, sigma)
-    samples = [rng.choice(s, p=p)]
-    for _ in range(n - 1):
-        if rng.random() < rho:
-            samples.append(samples[-1])
-        else:
-            samples.append(rng.choice(s, p=p))
-    return [int(x) for x in samples]
-
-
-# ---------------------------------------------------------------------------
-# Flaw library
+# Flaw library (generators live in flaws.py)
 # ---------------------------------------------------------------------------
 
 FLAW_LIBRARY = [
@@ -210,7 +142,7 @@ def pvalue_uniformity(mu=0.0, sigma=1.55, n=10000, reps=100,
     If the suite is well-calibrated, p-values under H0 should be
     U[0,1]. This meta-test detects miscalibration of the suite itself.
     """
-    support, probs = _pdt_arrays(mu, sigma)
+    support, probs = pdt_arrays(mu, sigma)
     pvalues = []
 
     for r in range(reps):

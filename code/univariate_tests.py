@@ -64,15 +64,10 @@ def mc_pvalue(observed, null_distribution):
 
 
 # ---------------------------------------------------------------------------
-# Helper: extract PDT as arrays
+# Helper: extract PDT as arrays (shared -- see distributions.pdt_arrays)
 # ---------------------------------------------------------------------------
 
-def pdt_arrays(mu, sigma, tau=14):
-    """Convert make_gaussian_pdt dict to aligned arrays."""
-    pdt = make_gaussian_pdt(mu, sigma)
-    support = np.array(sorted(pdt.keys()))
-    probs = np.array([pdt[z] for z in support])
-    return support, probs
+from distributions import pdt_arrays  # noqa: E402  (re-exported for callers)
 
 
 # ---------------------------------------------------------------------------
