@@ -14,7 +14,7 @@ from matplotlib.patches import FancyBboxPatch, Circle
 from matplotlib.colors import LinearSegmentedColormap
 from matplotlib import patheffects
 
-FIGDIR = os.path.join(os.path.dirname(__file__), '..', 'figures')
+FIGDIR = os.path.join(os.path.dirname(__file__), '..', '..', 'figures')
 os.makedirs(FIGDIR, exist_ok=True)
 
 # Consistent style

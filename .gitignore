@@ -19,3 +19,5 @@ code/testdata/
 .DS_Store
 figures/
 code/power_matrix.json
+# Calibration output (regenerate with scripts/run_extensive_calibration.py)
+extensive_calibration.json

@@ -12,7 +12,8 @@ import os
 import sys
 import glob
 
-# SAGA imports (must run from code/ directory)
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+
 from saga import UnivariateSamples, pmin
 
 

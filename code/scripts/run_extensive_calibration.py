@@ -10,10 +10,13 @@ Runtime estimate: 30-90 minutes depending on hardware.
 
 import argparse
 import json
+import os
 import time
 import sys
 import numpy as np
 from scipy.stats import kstest
+
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from saga import UnivariateSamples, make_gaussian_pdt
 from univariate_tests import (
