@@ -4,10 +4,73 @@ import sys
 import os
 
 import numpy as np
+import pytest
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from saga import MultivariateSamples
+from multivariate_tests import squared_norm_test, henze_zirkler_test
+from generate_test_vectors import multivariate_discrete_gaussian
+
+
+class TestSquaredNormCalibration:
+    """squared_norm must be calibrated on integer data, and keep its power.
+
+    ||x||^2 lives on a lattice; comparing it to a continuous chi2(dim) made the
+    test strongly anti-conservative at small sigma (mean p ~ 0.27 instead of
+    0.5, 20% of p-values below 0.05 on *correct* data). It now runs a binned
+    chi-square against the exact pmf of ||x||^2 -- an analytic null, so unlike
+    a Monte-Carlo calibration it keeps the power to reject at alpha.
+    """
+
+    DIM, SIGMA, N, REPS = 32, 1.55, 1000, 30
+
+    def _correct(self, seed):
+        rng = np.random.default_rng(seed)
+        return multivariate_discrete_gaussian(rng, self.DIM, self.SIGMA, self.N)
+
+    def test_calibrated_on_correct_integer_data(self):
+        p = np.array([squared_norm_test(self.SIGMA, self._correct(2000 + i))["pvalue"]
+                      for i in range(self.REPS)])
+        assert p.mean() > 0.35, (
+            f"squared_norm is anti-conservative on correct integer data: "
+            f"mean p = {p.mean():.3f} (expected ~0.5)")
+        assert (p < 0.05).mean() <= 0.20, (
+            f"{(p < 0.05).mean():.0%} of p-values below 0.05 on correct data "
+            f"(expected ~5%)")
+
+    def test_power_preserved_on_integer_data(self):
+        """A wrong sigma must still be rejected -- an MC null would floor at
+        1/(B+1) and silently lose this."""
+        rng = np.random.default_rng(2100)
+        bad = multivariate_discrete_gaussian(rng, self.DIM, self.SIGMA * 1.05, self.N)
+        res = squared_norm_test(self.SIGMA, bad)
+        assert not res["passes"] and res["pvalue"] < 1e-3, res["pvalue"]
+
+    def test_null_routing(self):
+        """Integer data uses the exact discrete null; continuous data the chi2."""
+        assert squared_norm_test(self.SIGMA, self._correct(2200))["null"] \
+            == "exact-discrete-chi2"
+        cont = np.random.default_rng(2300).normal(0, self.SIGMA,
+                                                  size=(self.N, self.DIM))
+        assert squared_norm_test(self.SIGMA, cont)["null"] == "chi2-analytic"
+
+
+class TestHenzeZirklerPValue:
+    def test_pvalue_floor_is_respected(self):
+        """The MC p-value must be (1 + #{null >= obs}) / (B + 1).
+
+        The naive mean() estimator returns exactly 0 whenever the observed
+        statistic beats every null draw -- and 0 is below *any* alpha, so it
+        rejected correct samplers about 1/(mc_B+1) of the time. Feed it data
+        far from Gaussian so the observed statistic certainly beats all nulls;
+        the p-value must then be the floor 1/(B+1), never 0.
+        """
+        MC_B = 20
+        rng = np.random.default_rng(2400)
+        far_from_gaussian = rng.uniform(-3, 3, size=(600, 16))
+        res = henze_zirkler_test(1.55, far_from_gaussian, mc_B=MC_B)
+        assert res["pvalue"] == pytest.approx(1.0 / (MC_B + 1)), res["pvalue"]
 
 
 class TestNonIntegerFallback:
