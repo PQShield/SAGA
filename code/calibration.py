@@ -164,6 +164,60 @@ def pvalue_uniformity(mu=0.0, sigma=1.55, n=10000, reps=100,
     }
 
 
+def multivariate_pvalue_uniformity(sigma=1.55, dim=32, n=1200, reps=50,
+                                   seed=4000, alpha=0.001):
+    """
+    The multivariate counterpart of pvalue_uniformity().
+
+    Draw `reps` *correct* multivariate datasets (iid discrete Gaussian, like
+    real signatures), run the full battery on each, and check two things:
+
+    - the battery's global p-value should be uniform on [0, 1];
+    - the false-alarm rate (all_pass = False on correct data) should be near
+      the nominal alpha.
+
+    This did not exist before, which is precisely why two miscalibrated
+    components (squared_norm's continuous chi2 reference on lattice data, and
+    henze_zirkler's naive MC p-value) went unnoticed and drove the false-alarm
+    rate to ~1.7% against a nominal 0.1%.
+    """
+    from generate_test_vectors import multivariate_discrete_gaussian
+    from saga import MultivariateSamples
+
+    global_pvalues = []
+    false_alarms = 0
+    per_component = {}
+    for r in range(reps):
+        rng = np.random.default_rng(seed + r)
+        data = multivariate_discrete_gaussian(rng, dim, sigma, n)
+        mv = MultivariateSamples(sigma, data)
+        ext = mv.run_multivariate_battery()
+        global_pvalues.append(float(ext["global_pvalue"]))
+        false_alarms += (not ext["all_pass"])
+        for name, p in ext["component_pvalues"].items():
+            per_component.setdefault(name, []).append(float(p))
+
+    global_pvalues = np.array(global_pvalues)
+    ks_stat, ks_pval = kstest(global_pvalues, 'uniform')
+    false_alarm_rate = false_alarms / reps
+
+    return {
+        "test": "multivariate_pvalue_uniformity",
+        "n_replicates": reps,
+        "params": {"sigma": sigma, "dim": dim, "n": n},
+        "ks_stat": float(ks_stat),
+        "ks_pvalue": float(ks_pval),
+        "mean_global_pvalue": float(global_pvalues.mean()),
+        "false_alarm_rate": false_alarm_rate,
+        "alpha": alpha,
+        "component_mean_pvalue": {k: float(np.mean(v))
+                                  for k, v in per_component.items()},
+        # A correct battery: global p roughly uniform, and false alarms not
+        # wildly above nominal (reps is small, so allow generous slack).
+        "passes": ks_pval > 0.01 and false_alarm_rate <= max(10 * alpha, 2 / reps),
+    }
+
+
 # ---------------------------------------------------------------------------
 # Pretty-print the power matrix
 # ---------------------------------------------------------------------------

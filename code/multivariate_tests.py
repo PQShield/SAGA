@@ -13,31 +13,124 @@ Tests:
 
 import numpy as np
 from math import sqrt
-from scipy.stats import kstest, chi2, norm
+from scipy.stats import kstest, chi2, chisquare, norm
 from scipy.stats import false_discovery_control, combine_pvalues
+
+from distributions import pdt_arrays
 
 
 # ---------------------------------------------------------------------------
 # 5.1 Squared-norm / radius test
 # ---------------------------------------------------------------------------
 
+# Largest ||x||^2 support we are willing to build by FFT convolution.
+# Beyond it the lattice is invisible anyway (it only grows with sigma), so the
+# analytic chi2 reference is valid and much cheaper.
+_MAX_NORM_SQ_SUPPORT = 1 << 22
+
+
+def _norm_sq_pmf(sigma, dim, tau=14):
+    """
+    Exact pmf of ||x||^2 when the dim coordinates are iid discrete Gaussians.
+
+    ||x||^2 is a sum of dim iid copies of X^2, so its pmf is the dim-fold
+    convolution of the pmf of X^2 -- computed here as a power of the DFT.
+    Returns None when the support would be too large to build; that only
+    happens for large sigma, where the lattice is unresolvable and the
+    continuous chi2 reference is valid.
+    """
+    support, probs = pdt_arrays(0.0, sigma, tau)
+    zmax = int(np.max(np.abs(support)))
+    length = dim * zmax ** 2 + 1
+    if length > _MAX_NORM_SQ_SUPPORT:
+        return None
+    sq = np.zeros(zmax ** 2 + 1)
+    for z, p in zip(support, probs):
+        sq[z * z] += p
+    size = 1 << int(np.ceil(np.log2(length)))
+    pmf = np.fft.irfft(np.fft.rfft(sq, size) ** dim, size)[:length]
+    pmf = np.clip(pmf, 0.0, None)
+    return pmf / pmf.sum()
+
+
+def _bins_from_pmf(pmf, n, min_exp=10.0, max_bins=50):
+    """
+    Near-equiprobable buckets of the exact pmf, merged until every bucket has
+    an expected count of at least `min_exp`. Returns (edges, bucket_probs),
+    where bucket j holds the integers in (edges[j], edges[j+1]].
+    """
+    cdf = np.cumsum(pmf)
+    nbins = int(min(max_bins, max(2, n // min_exp)))
+    edges = np.unique(np.searchsorted(cdf, np.arange(1, nbins) / nbins,
+                                      side='left'))
+    edges = edges[(edges >= 0) & (edges < len(pmf) - 1)]
+    bounds = np.concatenate(([-1], edges, [len(pmf) - 1]))
+
+    kept, carried, prev = [bounds[0]], 0.0, 0.0
+    for b in bounds[1:]:
+        p = cdf[b] - prev
+        if (carried + p) * n >= min_exp:
+            kept.append(b)
+            prev, carried = cdf[b], 0.0
+        else:
+            carried += p
+    if len(kept) > 2 and kept[-1] != bounds[-1]:
+        kept[-1] = bounds[-1]          # last sliver merges into the last bucket
+    kept = np.array(kept)
+    probs = np.diff(np.concatenate(([0.0], cdf[kept[1:]])))
+    return kept, probs
+
+
 def squared_norm_test(sigma, data, alpha=0.001):
     """
-    Test that ||x||^2 / sigma^2 ~ chi2(dim).
+    Test the distribution of ||x||^2.
 
     Catches radial flaws: correct marginals but wrong norm due to
     correlation between coordinates.
+
+    For *continuous* data, ||x||^2/sigma^2 ~ chi2(dim) exactly, so we use that
+    analytic reference. For *integer* data (real Falcon signatures, and the
+    discrete-Gaussian test vectors) that null is literally false: ||x||^2 lives
+    on a lattice of step 1, which a KS test resolves as soon as 1/sigma^2 is
+    not negligible against sd(chi2(dim)). At sigma = 1.55 this made the test
+    strongly anti-conservative -- 20% of p-values below 0.05 on *correct* data,
+    and about half of the battery's 1.7% false-alarm rate.
+
+    Note the discrete Gaussian's moments match the continuous ones to ~1e-21
+    here, so moment-matching does not help: the culprit is the lattice, not the
+    moments. Instead we build the exact pmf of ||x||^2 -- the dim-fold
+    convolution of the pmf of X^2, via an FFT -- and run a binned chi-square
+    against it. That null is analytic, so unlike a Monte-Carlo calibration it
+    has no p-value floor and can still reject at alpha.
     """
-    data = np.asarray(data, dtype=float)
+    data = np.asarray(data)
     n, dim = data.shape
-    norms_sq = np.sum(data ** 2, axis=1) / (sigma ** 2)
-    stat, pval = kstest(norms_sq, 'chi2', args=(dim,))
+    is_integer = bool(np.all(data == np.round(data)))
+
+    pmf = _norm_sq_pmf(sigma, dim) if is_integer else None
+    edges = probs = None
+    if pmf is not None:
+        edges, probs = _bins_from_pmf(pmf, n)
+    if edges is None or len(edges) < 3:
+        # Continuous data, or a sigma so large that the lattice is invisible.
+        norms_sq = np.sum(data.astype(float) ** 2, axis=1) / (sigma ** 2)
+        stat, pval = kstest(norms_sq, 'chi2', args=(dim,))
+        null_kind = "chi2-analytic"
+    else:
+        norms_sq_int = np.sum(data.astype(np.int64) ** 2, axis=1)
+        hist_edges = np.concatenate((edges[:1], edges[1:] + 0.5))
+        obs = np.histogram(norms_sq_int, bins=hist_edges)[0]
+        exp = probs * obs.sum() / probs.sum()
+        stat, pval = chisquare(obs, f_exp=exp)
+        norms_sq = norms_sq_int / (sigma ** 2)
+        null_kind = "exact-discrete-chi2"
 
     return {
         "test": "squared_norm",
         "statistic": float(stat),
         "pvalue": float(pval),
         "dim": dim,
+        "null": null_kind,
         "mean_norm_sq": float(np.mean(norms_sq)),
         "expected_mean": float(dim),
         "passes": pval > alpha,
@@ -205,8 +298,7 @@ def fft_domain_battery(sigma, data, alpha=0.001):
             hc_i = sqrt(m) * abs((i + 1) / m - p) / sqrt(expected * (1 - expected))
             hc_stat = max(hc_stat, hc_i)
 
-    _fisher = combine_pvalues(all_pvals, method='fisher')
-    fisher_stat, fisher_pval = float(_fisher.statistic), float(_fisher.pvalue)
+    fisher_pval = float(combine_pvalues(all_pvals, method='fisher').pvalue)
 
     results["higher_criticism_stat"] = float(hc_stat)
     results["fisher_pvalue"] = float(fisher_pval)
@@ -340,7 +432,12 @@ def _hz_statistic(Y_std, beta, p):
         diff = Y_sub[i] - Y_sub
         dists_sq[i] = np.sum(diff ** 2, axis=1)
 
-    term1 = np.sum(np.exp(-beta2 / 2 * dists_sq)) / n_sub
+    # term1 is a DOUBLE sum, so it is normalised by n^2 -- not n. Dividing by
+    # n only left a term ~n times larger than term2 and term3, which drowned
+    # them: the statistic became a monotone function of the mean pairwise
+    # distance alone, so it *decreased* for heavy-tailed data and the test had
+    # no power (a t(2) sample scored p = 1.00, a correct Gaussian p = 0.38).
+    term1 = np.sum(np.exp(-beta2 / 2 * dists_sq)) / (n_sub ** 2)
     norms_sq = np.sum(Y_sub ** 2, axis=1)
     term2 = 2 * (1 + beta2) ** (-p / 2) * np.sum(
         np.exp(-beta2 / (2 * (1 + beta2)) * norms_sq)
@@ -374,7 +471,11 @@ def henze_zirkler_test(sigma, data, alpha=0.001, mc_B=100):
 
     Y_std = Y @ L.T
 
-    beta = 1 / (2 * p) * ((2 * p + 1) * n / 4) ** (1 / (p + 4))
+    # Henze-Zirkler's smoothing parameter: the prefactor is 1/sqrt(2), a
+    # constant. It was 1/(2p) here, which shrinks the bandwidth like 1/p -- at
+    # p = 16 that is 0.048 instead of 1.08, a kernel so flat it cannot see the
+    # shape of the distribution, and at Falcon dimensions it would be ~1e-4.
+    beta = 1 / sqrt(2) * ((2 * p + 1) * n / 4) ** (1 / (p + 4))
 
     observed = _hz_statistic(Y_std, beta, p)
 
@@ -391,7 +492,15 @@ def henze_zirkler_test(sigma, data, alpha=0.001, mc_B=100):
         Y_null_std = (Y_null - Y_null.mean(axis=0)) @ L_null.T
         null_stats[b] = _hz_statistic(Y_null_std, beta, p)
 
-    pval = np.mean(null_stats >= observed)
+    # (1 + #{null >= obs}) / (B + 1), as everywhere else in the suite. The naive
+    # mean() can return exactly 0, which is below *any* alpha and so rejected a
+    # correct sampler about 1/(mc_B+1) of the time. Note the flip side: with
+    # this estimator the p-value floor is 1/(mc_B+1), well above alpha, so this
+    # test cannot single-handedly reject -- it is deliberately excluded from the
+    # Bonferroni gate in run_multivariate_battery and contributes through the
+    # Fisher pool instead. Reaching alpha would need mc_B >~ 10/alpha replicates,
+    # each O(n^2), which does not scale to Falcon dimensions.
+    pval = (1 + int(np.sum(null_stats >= observed))) / (mc_B + 1)
 
     return {
         "test": "henze_zirkler",
@@ -466,13 +575,19 @@ def run_multivariate_battery(sigma, data, cov_normalized, nsamples,
     _fisher = combine_pvalues(pvals, method='fisher')
     fisher_stat, global_pvalue = float(_fisher.statistic), float(_fisher.pvalue)
 
-    k = len(pvals)
+    # henze_zirkler's MC p-value has a floor of 1/(mc_B+1), far above alpha/k,
+    # so it can never trip the Bonferroni gate; leaving it in would only shrink
+    # the threshold for the components that *can*. It still counts in the Fisher
+    # pool above.
+    gated = {name: p for name, p in component_pvalues.items()
+             if name != "henze_zirkler"}
+    k = len(gated)
     results["component_pvalues"] = {kk: float(v)
                                     for kk, v in component_pvalues.items()}
     results["fisher_stat"] = fisher_stat
     results["global_pvalue"] = global_pvalue
     results["bonferroni_rejects"] = [
-        name for name, p in component_pvalues.items() if p <= alpha / k]
+        name for name, p in gated.items() if p <= alpha / k]
     results["bh_localized_flaw"] = bh_localized_flaw
     results["all_pass"] = (global_pvalue > alpha
                            and not results["bonferroni_rejects"]
